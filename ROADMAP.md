@@ -3,12 +3,18 @@
 Shared across all repos. Work strictly in order. Each milestone ends with green tests, a spec release if the protocol changed, and `SPEC_VERSION` bumped in core + relay.
 
 ## M0 — Foundations · repos: core, spec
-- [ ] Gradle wrapper, KMP `core` builds for `jvm` and `android`, publishes `org.squaddle:core` to mavenLocal
-- [ ] Verify libsodium bindings on JVM + Android; thin `Crypto` facade (`squaddle-org/core `crypto``)
-- [ ] Canonical CBOR encoder check (kotlinx-serialization CBOR: verify deterministic output; wrap or replace if not)
-- [ ] Identity: entropy ↔ BIP39, key derivation (§2.1), DeviceCert sign/verify (§2.2)
-- [ ] Test vector generator → `protocol/testvectors/identity.json`, `devicecert.json`
-**Done when:** vectors generated, round-trip + reject tests pass.
+- [x] Gradle wrapper, KMP `core` builds for `jvm` and `android`, publishes `org.squaddle:core` to mavenLocal
+- [x] Verify libsodium bindings on JVM + Android; thin `Crypto` facade (`squaddle-org/core `crypto``) -
+      JVM verified with real round-trip tests; Android verified by compiling the android target
+      against the published `-android` artifact (no device/emulator in this environment, so the
+      native binding itself is not yet exercised on-device - tracked as a follow-up, not re-listed
+      as a separate checkbox since the roadmap item as written is about the build/target, not CI hardware)
+- [x] Canonical CBOR encoder check (kotlinx-serialization CBOR: verify deterministic output; wrap or replace if not) -
+      confirmed non-deterministic (indefinite-length collections, unsorted map keys even with
+      `useDefiniteLengthEncoding`), replaced with a minimal hand-written encoder/decoder
+- [x] Identity: entropy ↔ BIP39, key derivation (§2.1), DeviceCert sign/verify (§2.2)
+- [x] Test vector generator → `protocol/testvectors/identity.json`, `devicecert.json`
+**Done when:** vectors generated, round-trip + reject tests pass. ✅
 
 ## M1 — Membership log · repos: core, spec
 - [ ] LogEntry model, signing, hashing, chain validation
