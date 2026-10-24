@@ -28,12 +28,23 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
       case per §3.3 row plus a chain-level stale-head case (13 total)
 
 ## M2 — Relay MVP · repo: relay
-- [ ] Go implementation of: CBOR decode, signature verify, log validation (port of M1 rules) — **must pass M1 vectors**
-- [ ] SQLite schema, endpoints from `relay-api.yaml` (devices, rooms, log, ops, envelopes)
-- [ ] Request auth (§5) incl. replay cache; rate limiting on envelope GET
-- [ ] WebSocket fanout; `/metrics` (Prometheus) on separate port; `/healthz`
-- [ ] Limits (§8): config flag `-limits=none|hosted`, `GET /limits`, `room_full`/`quota_exceeded`, retention pruning job, voucher entitlements + admin CLI to mint vouchers (incl. permanent `unlimited`), `-unlimited-owners` allowlist
-- [ ] Dockerfile, k8s manifests, integration test: two simulated clients against real relay
+- [x] Go implementation of: CBOR decode, signature verify, log validation (port of M1 rules) —
+      passes cbor-reject.json, identity.json, devicecert.json, logentry.json, log-reject.json,
+      invite.json (the cross-implementation test: same vectors as core's Kotlin, independently)
+- [x] SQLite schema, endpoints from `relay-api.yaml` (devices, rooms, log, ops, envelopes) -
+      every endpoint except `google_play`/`/billing/google/rtdn` (explicit M5b stub)
+- [x] Request auth (§5) incl. replay cache; rate limiting on envelope GET
+- [x] WebSocket fanout; `/metrics` (Prometheus) on separate port; `/healthz`
+- [x] Limits (§8): config flag `-limits=none|hosted`, `GET /limits`, `room_full`/`quota_exceeded`,
+      voucher entitlements + admin CLI to mint vouchers (incl. permanent `unlimited`),
+      `-unlimited-owners` allowlist — **retention pruning job not implemented**: PROTOCOL.md §4.4
+      never gives Snapshot's fields (room, epoch, coversUpTo, nonce, ct, author, device, sig) CBOR
+      field numbers (unlike every other structure in the spec), so the relay cannot parse a
+      client's real `coversUpTo` out of an uploaded snapshot without guessing a wire format.
+      Needs a spec PR adding that field-number table before pruning can be implemented for real.
+- [x] Dockerfile, k8s manifests (untouched, already correct from bootstrap), integration test:
+      two simulated clients against the real relay HTTP stack (real httptest.Server + real
+      temp-file SQLite, not mocked)
 
 ## M3 — Content plane + sync client · repos: core, spec
 - [ ] OpEnvelope encrypt/sign/verify, op bodies (§4.2), LWW materializer with authorization
