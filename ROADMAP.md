@@ -17,11 +17,15 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
 **Done when:** vectors generated, round-trip + reject tests pass. ✅
 
 ## M1 — Membership log · repos: core, spec
-- [ ] LogEntry model, signing, hashing, chain validation
-- [ ] State machine: roles, pending, invites (uses/expiry against `rts`), all authorization rules of §3.3
-- [ ] Epoch key wrap/unwrap, invite envelope (§3.5)
-- [ ] Property tests: random valid/invalid entry sequences; every rule has a reject test
-- [ ] Vectors: `logentry.json`, `log-reject.json`, `invite.json`
+- [x] LogEntry model, signing, hashing, chain validation
+- [x] State machine: roles, pending, invites (uses/expiry against `rts`), all authorization rules of §3.3
+- [x] Epoch key wrap/unwrap, invite envelope (§3.5)
+- [x] Property tests: random valid/invalid entry sequences; every rule has a reject test -
+      44 tests in core's MembershipStateTest (one accept + >=1 reject per §3.3 row, a full
+      12-entry-type lifecycle, one kotest-property test over random member-set sizes injecting a
+      deliberately-unauthorized mutation each run)
+- [x] Vectors: `logentry.json`, `log-reject.json`, `invite.json` - log-reject.json has one reject
+      case per §3.3 row plus a chain-level stale-head case (13 total)
 
 ## M2 — Relay MVP · repo: relay
 - [ ] Go implementation of: CBOR decode, signature verify, log validation (port of M1 rules) — **must pass M1 vectors**
