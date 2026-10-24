@@ -1,0 +1,31 @@
+[
+    {
+        "name": "invite-basic",
+        "input": {
+            "inviteSecret": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
+            "roomId": "WltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHk",
+            "inviteId": "ZGVmZ2hpamtsbW5vcHFycw",
+            "epoch": 0,
+            "epochKey": "bm9wcXJzdHV2d3h5ent8fX5_gIGCg4SFhoeIiYqLjI0",
+            "roomName": "Board Game Night"
+        },
+        "expected": {
+            "accept": true,
+            "inviteKey": "Uxv8x4G-d-jBHUI9LQN4crtzD4ZgcjdvNlP5fV0u0wM",
+            "envelope": "yF7vF8jJuPAybEr2hrxyPTK1X5tVwf-YroDnBXG5-Gi0Q5VWe9vTuWVDoWxCOczlYnlZHINh3a77YG_YcXB8_uFUgPI9as7xNlys215_1OYxO2ZhtY2wXIAvpvTqhls7VJnbwkAQwTDnjypQ38uT1IIdTayp9eQRcR6PLi1wLvSygnM"
+        }
+    },
+    {
+        "name": "invite-reject-tampered-ciphertext",
+        "input": {
+            "inviteSecret": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
+            "roomId": "WltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHk",
+            "inviteId": "ZGVmZ2hpamtsbW5vcHFycw",
+            "envelope": "yF7vF8jJuPAybEr2hrxyPTK1X5tVwf-YroDnBXG5-Gi0Q5VWe9vTuWVDoWxCOczlYnlZHINh3a77YG_YcXB8_uFUgPI9as7xNlys215_1OYxO2ZhtY2wXIAvpvTqhls7VJnbwkAQwTDnjypQ38uT1IIdTayp9eQRcR6PLi1wLvSygnQ"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "AEAD authentication failed"
+        }
+    }
+]
