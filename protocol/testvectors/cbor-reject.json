@@ -1,0 +1,179 @@
+[
+    {
+        "name": "cbor-accept-uint-0",
+        "input": {
+            "cbor": "AA"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-23",
+        "input": {
+            "cbor": "Fw"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-24",
+        "input": {
+            "cbor": "GBg"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-255",
+        "input": {
+            "cbor": "GP8"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-256",
+        "input": {
+            "cbor": "GQEA"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-65535",
+        "input": {
+            "cbor": "Gf__"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-65536",
+        "input": {
+            "cbor": "GgABAAA"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-4294967295",
+        "input": {
+            "cbor": "Gv____8"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-uint-4294967296",
+        "input": {
+            "cbor": "GwAAAAEAAAAA"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-bool-true",
+        "input": {
+            "cbor": "9Q"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-bool-false",
+        "input": {
+            "cbor": "9A"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-null",
+        "input": {
+            "cbor": "9g"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-accept-sorted-map",
+        "input": {
+            "cbor": "owACAgMFAQ"
+        },
+        "expected": {
+            "accept": true
+        }
+    },
+    {
+        "name": "cbor-reject-indefinite-length-map",
+        "input": {
+            "cbor": "v_8"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "indefinite-length items are not canonical"
+        }
+    },
+    {
+        "name": "cbor-reject-overlong-int-encoding",
+        "input": {
+            "cbor": "GAA"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "non-shortest-form integer/length encoding"
+        }
+    },
+    {
+        "name": "cbor-reject-out-of-order-map-keys",
+        "input": {
+            "cbor": "ogIAAAA"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "map keys not in strictly ascending canonical order"
+        }
+    },
+    {
+        "name": "cbor-reject-duplicate-map-keys",
+        "input": {
+            "cbor": "ogAAAAE"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "map keys not in strictly ascending canonical order (duplicate)"
+        }
+    },
+    {
+        "name": "cbor-reject-trailing-bytes",
+        "input": {
+            "cbor": "AQA"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "trailing bytes after top-level value"
+        }
+    },
+    {
+        "name": "cbor-reject-truncated-input",
+        "input": {
+            "cbor": "GQE"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "unexpected end of input"
+        }
+    }
+]
