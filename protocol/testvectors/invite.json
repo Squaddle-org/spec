@@ -12,7 +12,7 @@
         "expected": {
             "accept": true,
             "inviteKey": "Uxv8x4G-d-jBHUI9LQN4crtzD4ZgcjdvNlP5fV0u0wM",
-            "envelope": "yF7vF8jJuPAybEr2hrxyPTK1X5tVwf-YroDnBXG5-Gi0Q5VWe9vTuWVDoWxCOczlYnlZHINh3a77YG_YcXB8_uFUgPI9as7xNlys215_1OYxO2ZhtY2wXIAvpvTqhls7VJnbwkAQwTDnjypQ38uT1IIdTayp9eQRcR6PLi1wLvSygnM"
+            "envelope": "eHl6e3x9fn-AgYKDhIWGh4iJiouMjY6PJWE7Pn4zciSUHZ_MWq8my86-4cEag9m5SP_Fj0DqJIKALYdMjWN6uNwl5_pZmqjBCXSOGe998N3askzKAjIAEjpTSVbcwnZ94MCKHhpDhepkxThWsIHiWDXtGukR5fd4QeakXkaE6__qIg8"
         }
     },
     {
@@ -21,7 +21,7 @@
             "inviteSecret": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
             "roomId": "WltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHk",
             "inviteId": "ZGVmZ2hpamtsbW5vcHFycw",
-            "envelope": "yF7vF8jJuPAybEr2hrxyPTK1X5tVwf-YroDnBXG5-Gi0Q5VWe9vTuWVDoWxCOczlYnlZHINh3a77YG_YcXB8_uFUgPI9as7xNlys215_1OYxO2ZhtY2wXIAvpvTqhls7VJnbwkAQwTDnjypQ38uT1IIdTayp9eQRcR6PLi1wLvSygnQ"
+            "envelope": "eHl6e3x9fn-AgYKDhIWGh4iJiouMjY6PJWE7Pn4zciSUHZ_MWq8my86-4cEag9m5SP_Fj0DqJIKALYdMjWN6uNwl5_pZmqjBCXSOGe998N3askzKAjIAEjpTSVbcwnZ94MCKHhpDhepkxThWsIHiWDXtGukR5fd4QeakXkaE6__qIhA"
         },
         "expected": {
             "accept": false,
