@@ -1,0 +1,19 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package test vectors
+        run: tar -czf testvectors.tar.gz -C protocol testvectors
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pre=""; [[ "$GITHUB_REF_NAME" == *-* ]] && pre="--prerelease"
+          gh release create "$GITHUB_REF_NAME" testvectors.tar.gz protocol/PROTOCOL.md protocol/relay-api.yaml $pre --generate-notes

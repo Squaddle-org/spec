@@ -1,0 +1,185 @@
+openapi: 3.1.0
+info:
+  title: Squaddle Relay API
+  version: 1.0.0-draft
+  description: |
+    Dumb, content-blind relay. Normative semantics live in PROTOCOL.md.
+    Binary fields are base64url (no padding) in JSON. CBOR bodies use application/cbor.
+servers:
+  - url: https://relay.squaddle.org/v1
+components:
+  securitySchemes:
+    sqdl1:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'SQDL1 device=<b64>, ts=<unix>, sig=<b64> (see PROTOCOL.md §5)'
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string, enum: [bad_signature, stale_head, stale_epoch, forbidden, not_found, expired, exhausted, rate_limited, room_full, quota_exceeded, invalid_entitlement, invalid] }
+        message: { type: string }
+        head: { type: string, description: current head hash on stale_head }
+        epoch: { type: integer, description: current epoch on stale_epoch }
+    CborBlob:
+      type: string
+      format: binary
+security:
+  - sqdl1: []
+paths:
+  /users/{user}/devices/{device}:
+    put:
+      summary: Publish a DeviceCert (CBOR). Must be signed by the device itself.
+      parameters:
+        - { name: user, in: path, required: true, schema: { type: string } }
+        - { name: device, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/cbor: { schema: { $ref: '#/components/schemas/CborBlob' } } } }
+      responses: { '204': { description: stored }, '400': { description: invalid } }
+  /users/{user}/devices:
+    get:
+      summary: List DeviceCerts and DeviceRevokes for a user
+      security: []
+      parameters: [ { name: user, in: path, required: true, schema: { type: string } } ]
+      responses: { '200': { description: CBOR array, content: { application/cbor: {} } } }
+  /users/{user}/revocations:
+    post:
+      summary: Publish a DeviceRevoke (signed by user key)
+      parameters: [ { name: user, in: path, required: true, schema: { type: string } } ]
+      requestBody: { required: true, content: { application/cbor: {} } }
+      responses: { '204': { description: stored } }
+  /rooms:
+    post:
+      summary: Create room from a genesis LogEntry (CBOR)
+      requestBody: { required: true, content: { application/cbor: {} } }
+      responses:
+        '201': { description: created }
+        '409': { description: room exists }
+  /rooms/{room}/log:
+    get:
+      summary: Fetch membership log entries from index
+      parameters:
+        - { name: room, in: path, required: true, schema: { type: string } }
+        - { name: from, in: query, schema: { type: integer, default: 0 } }
+      responses: { '200': { description: 'CBOR array of {entry, rts}' } }
+    post:
+      summary: Append a LogEntry. Relay validates chain + authorization. Non-members may only append `join`.
+      parameters: [ { name: room, in: path, required: true, schema: { type: string } } ]
+      requestBody: { required: true, content: { application/cbor: {} } }
+      responses:
+        '201': { description: appended, returns index + rts }
+        '403': { description: forbidden }
+        '409': { description: stale_head, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+  /rooms/{room}/ops:
+    get:
+      summary: Fetch ops after cursor (members only)
+      parameters:
+        - { name: room, in: path, required: true, schema: { type: string } }
+        - { name: after, in: query, schema: { type: integer, default: 0 } }
+        - { name: limit, in: query, schema: { type: integer, default: 500, maximum: 2000 } }
+      responses: { '200': { description: 'CBOR {ops:[{cursor, envelope}], next}' } }
+    post:
+      summary: Append a batch of OpEnvelopes (members only, current epoch)
+      parameters: [ { name: room, in: path, required: true, schema: { type: string } } ]
+      requestBody: { required: true, content: { application/cbor: {} } }
+      responses:
+        '201': { description: 'accepted, returns cursors' }
+        '409': { description: stale_epoch }
+  /rooms/{room}/limits:
+    get:
+      summary: Current relay-local limits for the room (PROTOCOL.md §8)
+      parameters: [ { name: room, in: path, required: true, schema: { type: string } } ]
+      responses:
+        '200':
+          description: limits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tier: { type: string, enum: [free, boosted, custom] }
+                  maxMembers: { type: [integer, 'null'] }
+                  maxPending: { type: [integer, 'null'] }
+                  opRetentionDays: { type: [integer, 'null'] }
+                  attachmentBytes: { type: [integer, 'null'] }
+                  maxActiveInvites: { type: [integer, 'null'] }
+                  boostedUntil: { type: [integer, 'null'] }
+  /entitlements:
+    post:
+      summary: Redeem a purchase token or voucher to boost a room (caller must be a member)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [room, provider, token]
+              properties:
+                room: { type: string }
+                provider: { type: string, enum: [google_play, voucher] }
+                token: { type: string }
+      responses:
+        '201': { description: 'boost active: {room, tier, until}' }
+        '400': { description: invalid_entitlement }
+        '409': { description: 'token already bound to another room' }
+  /billing/google/rtdn:
+    post:
+      summary: Google Play Real-Time Developer Notifications (Pub/Sub push), internal
+      security: []
+      responses: { '204': { description: processed } }
+  /rooms/{room}/snapshots/latest:
+    get:
+      summary: Latest snapshot
+      parameters: [ { name: room, in: path, required: true, schema: { type: string } } ]
+      responses: { '200': { description: CBOR Snapshot }, '404': { description: none } }
+  /rooms/{room}/snapshots:
+    post:
+      summary: Upload snapshot
+      parameters: [ { name: room, in: path, required: true, schema: { type: string } } ]
+      requestBody: { required: true, content: { application/cbor: {} } }
+      responses: { '201': { description: stored } }
+  /invites/{room}/{invite}/envelope:
+    get:
+      summary: Fetch invite envelope (unauthenticated, rate-limited)
+      security: []
+      parameters:
+        - { name: room, in: path, required: true, schema: { type: string } }
+        - { name: invite, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: 'raw envelope bytes', content: { application/octet-stream: {} } }
+        '404': { description: unknown/revoked }
+        '410': { description: expired or exhausted }
+    put:
+      summary: Upload/replace envelope (owner/admin)
+      parameters:
+        - { name: room, in: path, required: true, schema: { type: string } }
+        - { name: invite, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/octet-stream: {} } }
+      responses: { '204': { description: stored } }
+  /link/{code}:
+    post:
+      summary: Device-linking mailbox write (expires 5 min)
+      security: []
+      parameters: [ { name: code, in: path, required: true, schema: { type: string } } ]
+      requestBody: { required: true, content: { application/octet-stream: {} } }
+      responses: { '204': { description: stored } }
+    get:
+      summary: Device-linking mailbox read (single read, deletes)
+      security: []
+      parameters: [ { name: code, in: path, required: true, schema: { type: string } } ]
+      responses: { '200': { description: blobs }, '404': { description: empty } }
+  /push:
+    post:
+      summary: Register UnifiedPush endpoint for the calling device
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [endpoint], properties: { endpoint: { type: string, format: uri } } } } }
+      responses: { '204': { description: registered } }
+    delete:
+      summary: Unregister push for the calling device
+      responses: { '204': { description: removed } }
+  /ws:
+    get:
+      summary: 'WebSocket. Client sends {"sub":["<room>",...]}; server pushes {"r":"<room>","c":<cursor>,"k":"ops|log"}'
+      responses: { '101': { description: upgraded } }
