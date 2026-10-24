@@ -9,6 +9,7 @@ Planned files (M0/M1):
 
 | File | Covers |
 |---|---|
+| `cbor-reject.json` | canonical CBOR encode/decode round trips plus the non-canonical inputs §1 requires a decoder to reject |
 | `identity.json` | entropy → mnemonic → master → userKey / userBoxKey |
 | `devicecert.json` | DeviceCert CBOR bytes, signing input, sig, plus invalid variants |
 | `logentry.json` | genesis, inviteCreate, join, remove, epochRotate; entryHash chain |

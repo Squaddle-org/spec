@@ -18,6 +18,13 @@ Normative. "MUST/SHOULD/MAY" per RFC 2119. Every structure here gets test vector
 unsigned integer keys (listed per struct) to keep payloads tiny. Byte strings are raw bytes.
 In JSON (HTTP bodies, test vectors) binary fields are base64url without padding.
 
+A decoder MUST reject any input that is not *the* unique canonical encoding of its value:
+non-shortest-form integers or lengths, indefinite-length byte strings/text strings/arrays/maps,
+map keys not in strictly ascending order of their encoded bytes (including duplicate keys), and
+any trailing bytes after the top-level value. This applies to every CBOR decode in this protocol,
+not only to structures that get hashed or signed - accepting a second valid encoding of the same
+logical value is exactly what canonical CBOR exists to rule out. See `testvectors/cbor-reject.json`.
+
 **Signing rule:** `sig = Ed25519(sk, "SQDL1" ‖ domain ‖ 0x00 ‖ BLAKE2b(CBOR(struct without sig field)))`
 where `domain` is the ASCII tag given per struct. Domain separation is mandatory.
 
