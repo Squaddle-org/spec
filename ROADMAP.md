@@ -22,7 +22,7 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
 - [ ] SQLite schema, endpoints from `relay-api.yaml` (devices, rooms, log, ops, envelopes)
 - [ ] Request auth (§5) incl. replay cache; rate limiting on envelope GET
 - [ ] WebSocket fanout; `/metrics` (Prometheus) on separate port; `/healthz`
-- [ ] Limits (§8): config flag `-limits=none|hosted`, `GET /limits`, `room_full`/`quota_exceeded`, retention pruning job, voucher entitlements + admin CLI to mint vouchers
+- [ ] Limits (§8): config flag `-limits=none|hosted`, `GET /limits`, `room_full`/`quota_exceeded`, retention pruning job, voucher entitlements + admin CLI to mint vouchers (incl. permanent `unlimited`), `-unlimited-owners` allowlist
 - [ ] Dockerfile, k8s manifests, integration test: two simulated clients against real relay
 
 ## M3 — Content plane + sync client · repos: core, spec

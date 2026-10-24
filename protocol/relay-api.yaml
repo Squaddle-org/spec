@@ -98,7 +98,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  tier: { type: string, enum: [free, boosted, custom] }
+                  tier: { type: string, enum: [free, boosted, unlimited, custom] }
                   maxMembers: { type: [integer, 'null'] }
                   maxPending: { type: [integer, 'null'] }
                   opRetentionDays: { type: [integer, 'null'] }

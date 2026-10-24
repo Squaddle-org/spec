@@ -203,7 +203,7 @@ so a room keeps working unchanged when it moves to another relay (federation, se
 ### 8.1 Limits
 ```
 RoomLimits {                       // JSON, GET /v1/rooms/{room}/limits (members only)
-  tier:            "free" | "boosted" | "custom"
+  tier:            "free" | "boosted" | "unlimited" | "custom"
   maxMembers:      int | null      // non-pending members incl. owner; null = unlimited
   maxPending:      int | null
   opRetentionDays: int | null      // ops older than this AND covered by a snapshot may be pruned
@@ -214,7 +214,18 @@ RoomLimits {                       // JSON, GET /v1/rooms/{room}/limits (members
 ```
 Defaults on the official hosted relay (tunable relay config):
 free = 20 members, 90 days op retention, attachments disabled; boosted = 100 members, unlimited retention, 1 GiB attachments.
+unlimited = all limits `null`, no expiry (operator tier, never sold).
 **Self-hosted relays default to unlimited** (`-limits=none`).
+
+### 8.1a Operator tier "unlimited"
+Granted only by the relay operator, two ways:
+1. **Owner allowlist** (relay config `-unlimited-owners=<b32 userKey>,...`): every room whose *current* owner
+   (per membership log) is on the list is `unlimited`. Evaluated on every limits check, so it follows
+   `transferOwner` — transferring a room to someone not on the list drops it to its normal tier.
+2. **Permanent voucher**: voucher with tier `unlimited` and no duration, minted via the relay admin CLI,
+   bound to one room like any entitlement.
+
+Precedence: `unlimited` > `boosted` > `free`. Clients just display the tier from `GET /limits`.
 
 Retention never deletes room state: pruning only removes ops already covered by a snapshot (§4.4),
 so ideas/votes/events stay; only fine-grained history disappears.
