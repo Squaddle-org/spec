@@ -50,7 +50,7 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
 - [ ] Strict CSP, no third-party JS, SRI
 - [ ] Fork detection: clients embed observed log head in ops, warn on divergence
 
-## M5b — Monetization · repos: android, relay, infra
+## M5b — Monetization · repos: android, relay
 - [ ] Play Billing subscription "Room Boost" (+ optional one-time "Supporter" unlock for cosmetics)
 - [ ] Relay: Play Developer API verification, acknowledge, RTDN endpoint for renew/cancel/refund
 - [ ] Boost management screen: who boosted, until when, move boost to another room (once per period)

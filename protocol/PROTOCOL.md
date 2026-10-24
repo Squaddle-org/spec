@@ -212,7 +212,7 @@ RoomLimits {                       // JSON, GET /v1/rooms/{room}/limits (members
   boostedUntil:    unix | null
 }
 ```
-Defaults on the official hosted relay (tunable, documented in squaddle-org/infra BUSINESS.md (private)):
+Defaults on the official hosted relay (tunable relay config):
 free = 20 members, 90 days op retention, attachments disabled; boosted = 100 members, unlimited retention, 1 GiB attachments.
 **Self-hosted relays default to unlimited** (`-limits=none`).
 

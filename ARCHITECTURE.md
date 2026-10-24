@@ -71,7 +71,7 @@ Seed (BIP39, 24 words, 256-bit entropy)
 ## Limits & monetization (ADR-0010)
 Relay-local room limits (members, retention, invites, attachments) with a free tier on the hosted relay
 and paid "Room Boosts" redeemed via store purchase tokens or vouchers. Self-hosted relays are unlimited.
-Details: PROTOCOL.md §8, squaddle-org/infra BUSINESS.md (private).
+Details: PROTOCOL.md §8.
 
 ## Federation (later, ADR-0008)
 Room refs are `roomId@relayHost`; users are bare public keys; ops and log entries are self-contained and content-addressed. Federation = relays replicating a room's log and ops. Nothing in v1 may assume a single relay per user.
