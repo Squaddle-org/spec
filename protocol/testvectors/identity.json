@@ -1,0 +1,296 @@
+[
+    {
+        "name": "identity-all-zero",
+        "input": {
+            "entropy": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "expected": {
+            "mnemonic": [
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "art"
+            ],
+            "master": "iesNaoppHa4s0V7QNpkxzgqUnsr6XD-T-BIYM2RuFcM",
+            "userKey": "ouGJcXIzrBC9yTC2F4zdBPWGDhu4J9Nlg3rhS2skc28",
+            "userBoxKey": "dQZ5PPwruIkraocemoj7xeRVVydMv0-bnNa3a45vQ1U",
+            "backupKey": "wWMTzHICWxx172U4hzEJOqLecBzLOpin9j722FKtGBQ"
+        }
+    },
+    {
+        "name": "identity-pattern-7f",
+        "input": {
+            "entropy": "f39_f39_f39_f39_f39_f39_f39_f39_f39_f39_f38"
+        },
+        "expected": {
+            "mnemonic": [
+                "legal",
+                "winner",
+                "thank",
+                "year",
+                "wave",
+                "sausage",
+                "worth",
+                "useful",
+                "legal",
+                "winner",
+                "thank",
+                "year",
+                "wave",
+                "sausage",
+                "worth",
+                "useful",
+                "legal",
+                "winner",
+                "thank",
+                "year",
+                "wave",
+                "sausage",
+                "worth",
+                "title"
+            ],
+            "master": "Ij185w9wJzC_boQcczWWM-j23kwlhZxE4j1Q04UGfB8",
+            "userKey": "2rtEI2H1Z6CErUqM8GAO6FRUHWj3nIvq3A0JZ32rByE",
+            "userBoxKey": "cPtAWJDcvHlfJIzlmLI8Ofon_Y3ROAY5dVfe5gjvUjk",
+            "backupKey": "R9UsfjZK2o-dlzuBp60JMl5cxfiA78VRpb5X1UiLANo"
+        }
+    },
+    {
+        "name": "identity-pattern-80",
+        "input": {
+            "entropy": "gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA"
+        },
+        "expected": {
+            "mnemonic": [
+                "letter",
+                "advice",
+                "cage",
+                "absurd",
+                "amount",
+                "doctor",
+                "acoustic",
+                "avoid",
+                "letter",
+                "advice",
+                "cage",
+                "absurd",
+                "amount",
+                "doctor",
+                "acoustic",
+                "avoid",
+                "letter",
+                "advice",
+                "cage",
+                "absurd",
+                "amount",
+                "doctor",
+                "acoustic",
+                "bless"
+            ],
+            "master": "6PryL8-nr_Es26BM4bZity5vMs28hmLkpEMq6URwvZY",
+            "userKey": "x_1ikf0O_tnQs0WIaoggFyg6cPCaaHEneKtoNQYQiTE",
+            "userBoxKey": "Sbd6T3_ww4VBnTkOHfDCAsvXdjCrjGmALRlwxNMbl08",
+            "backupKey": "o8Ro2hFJ3B6puX_3W45fRRdilqrGfM_Akd4XpFlw6dw"
+        }
+    },
+    {
+        "name": "identity-all-ff",
+        "input": {
+            "entropy": "__________________________________________8"
+        },
+        "expected": {
+            "mnemonic": [
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "zoo",
+                "vote"
+            ],
+            "master": "4gIRYFAPARkLi582-dDR2s-Oka5w3u1t3aQ-1BRYXtQ",
+            "userKey": "otYyvUfIjE0aNG2-I718P0ATINJzZqju4jWqXZu7Tgw",
+            "userBoxKey": "zjQuxmKcMXXp41YU7Ptkfcw7GdqlQ6hGUWuzQC4dzno",
+            "backupKey": "15b6Q_46TwDPdMMnHKla2-2k_zKRpGZ-D4yWXzyitAc"
+        }
+    },
+    {
+        "name": "identity-incrementing",
+        "input": {
+            "entropy": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        },
+        "expected": {
+            "mnemonic": [
+                "abandon",
+                "amount",
+                "liar",
+                "amount",
+                "expire",
+                "adjust",
+                "cage",
+                "candy",
+                "arch",
+                "gather",
+                "drum",
+                "bullet",
+                "absurd",
+                "math",
+                "era",
+                "live",
+                "bid",
+                "rhythm",
+                "alien",
+                "crouch",
+                "range",
+                "attend",
+                "journey",
+                "unaware"
+            ],
+            "master": "yy9RYPwffgWlXvSdNAtI2i5aeAmdUzkzUc1XndQlA9Y",
+            "userKey": "2T-VLd8Ucao6DD4ASNuCho8_kyaFGY5TMLrd-IJ4jTM",
+            "userBoxKey": "HcXRHkbqnsNF9I_Q014cVB3TwM1q6c__Bh_8pqq2EDI",
+            "backupKey": "37hNsi-CNxKxVRAfg3TG9d21esZMMB3B5F_rumP0gnA"
+        }
+    },
+    {
+        "name": "identity-reject-bad-checksum",
+        "input": {
+            "mnemonic": [
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "zoo"
+            ]
+        },
+        "expected": {
+            "accept": false,
+            "reason": "checksum mismatch"
+        }
+    },
+    {
+        "name": "identity-reject-word-count",
+        "input": {
+            "mnemonic": [
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon"
+            ]
+        },
+        "expected": {
+            "accept": false,
+            "reason": "word count must be one of [12, 15, 18, 21, 24]"
+        }
+    },
+    {
+        "name": "identity-reject-unknown-word",
+        "input": {
+            "mnemonic": [
+                "squaddle",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "abandon",
+                "art"
+            ]
+        },
+        "expected": {
+            "accept": false,
+            "reason": "not a BIP39 English wordlist word"
+        }
+    }
+]

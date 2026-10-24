@@ -1,0 +1,59 @@
+[
+    {
+        "name": "devicecert-basic",
+        "input": {
+            "user": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+            "userBox": "SjgH0GTQdxgcwHCYnnaJHSDcpVWVSNwsd8GlAnOIKzg",
+            "device": "AgMEBQYHCAkKCwwNDg8QERITFBUWFxgZGhscHR4fICE",
+            "label": "Pixel 8",
+            "issuedAt": 1700000000
+        },
+        "expected": {
+            "accept": true,
+            "unsignedCbor": "pgABAVggA6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbgCWCBKOAfQZNB3GBzAcJiedokdINylVZVI3Cx3waUCc4grOANYIAIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhBGdQaXhlbCA4BRplU_EA",
+            "signingInput": "U1FETDFkZXZjZXJ0ABy3DDXqBJIRxjXQBFwlp1lvGnDU_8zuPH2ft-GXMCqz",
+            "sig": "UMHoUlzHZvCfrOr411cZ2zhqfNra90NhmqYKqUpipRE-5tWMgkqzQEv8tRkNEL_LN7oZozAJEKWfFP7VPPdRBw",
+            "cbor": "pwABAVggA6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbgCWCBKOAfQZNB3GBzAcJiedokdINylVZVI3Cx3waUCc4grOANYIAIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhBGdQaXhlbCA4BRplU_EABlhAUMHoUlzHZvCfrOr411cZ2zhqfNra90NhmqYKqUpipRE-5tWMgkqzQEv8tRkNEL_LN7oZozAJEKWfFP7VPPdRBw"
+        }
+    },
+    {
+        "name": "devicecert-reject-tampered-signature",
+        "input": {
+            "cbor": "pwABAVggA6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbgCWCBKOAfQZNB3GBzAcJiedokdINylVZVI3Cx3waUCc4grOANYIAIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhBGdQaXhlbCA4BRplU_EABlhAUcHoUlzHZvCfrOr411cZ2zhqfNra90NhmqYKqUpipRE-5tWMgkqzQEv8tRkNEL_LN7oZozAJEKWfFP7VPPdRBw"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "signature does not verify"
+        }
+    },
+    {
+        "name": "devicecert-reject-cross-domain-signature",
+        "input": {
+            "cbor": "pwABAVggA6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbgCWCBKOAfQZNB3GBzAcJiedokdINylVZVI3Cx3waUCc4grOANYIAIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhBGdQaXhlbCA4BRplU_EABlhAQqFCcxCTwE9Kc5qUwYn9VD8W2vP01N96DSWv4ItOjVr0qr_iEdco_qYtdR86KGO3rG-ysFvER-GtaEvH6IAJBQ"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "signed under the wrong domain (\"devrevoke\" instead of \"devcert\")"
+        }
+    },
+    {
+        "name": "devicecert-reject-label-too-long",
+        "input": {
+            "cbor": "pwABAVggA6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbgCWCBKOAfQZNB3GBzAcJiedokdINylVZVI3Cx3waUCc4grOANYIAIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhBHhBeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHgFGmVT8QAGWEC2YI-6-XzsywM8FYfFMEQQcHJcM9p1nHpyBmWW4D-NNF2e7wRyT8WaZ23Ahxa--d8Cs6nrXEV7K_S-4dgL3OgP"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "label exceeds 64 chars"
+        }
+    },
+    {
+        "name": "devicecert-reject-unknown-version",
+        "input": {
+            "cbor": "pwACAVggA6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbgCWCBKOAfQZNB3GBzAcJiedokdINylVZVI3Cx3waUCc4grOANYIAIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhBGdQaXhlbCA4BRplU_EABlhABCZPYQsMbNjJBLwOihSLCPQFYfAhLFBGvGhS68h1VDNvjoD9PbTNXMTR2owhJYW_ZbF9xReOF3L7c_Fwttg9AA"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "unknown major v=2"
+        }
+    }
+]
