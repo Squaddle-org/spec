@@ -117,8 +117,14 @@ if `prev == currentHead` (else `409`, client refetches and retries).
 ### 3.4 Epoch keys
 - `epochKey` = 32 random bytes, `epoch` starts at 0 (in genesis).
 - Wrapped per user: `crypto_box_seal(userBoxKey, CBOR{0:room, 1:epoch, 2:epochKey})`.
-- A `remove` (and SHOULD after `leave`) MUST be followed by an `epochRotate` from the same actor.
-  Clients MUST rotate automatically when they author a `remove`.
+- Membership state tracks a derived `rotationPending` flag: `true` as soon as a `remove` is
+  accepted, cleared back to `false` by the next accepted `epochRotate` (from any current
+  owner/admin, not necessarily the one who removed). While `rotationPending` is `true`, the relay
+  MUST reject `POST /rooms/{room}/ops` with `409 rotation_required`; membership-log appends other
+  than `epochRotate` are unaffected. Clients MUST rotate automatically when they author a `remove`
+  and MUST retry ops rejected with `rotation_required` after the next successful `epochRotate`,
+  the same way they already retry on `stale_epoch`. `leave` keeps its existing SHOULD-rotate
+  guidance, unenforced. See ADR-0012.
 - After `epochRotate`, the relay rejects content ops with `epoch < current` (`409 stale_epoch`);
   clients re-encrypt pending ops with the new key and retry.
 

@@ -19,7 +19,7 @@ components:
       type: object
       required: [code, message]
       properties:
-        code: { type: string, enum: [bad_signature, stale_head, stale_epoch, forbidden, not_found, expired, exhausted, rate_limited, room_full, quota_exceeded, invalid_entitlement, invalid] }
+        code: { type: string, enum: [bad_signature, stale_head, stale_epoch, rotation_required, forbidden, not_found, expired, exhausted, rate_limited, room_full, quota_exceeded, invalid_entitlement, invalid] }
         message: { type: string }
         head: { type: string, description: current head hash on stale_head }
         epoch: { type: integer, description: current epoch on stale_epoch }
@@ -85,7 +85,7 @@ paths:
       requestBody: { required: true, content: { application/cbor: {} } }
       responses:
         '201': { description: 'accepted, returns cursors' }
-        '409': { description: stale_epoch }
+        '409': { description: 'stale_epoch, or rotation_required while a remove has not yet been followed by an epochRotate (ADR-0012)' }
   /rooms/{room}/limits:
     get:
       summary: Current relay-local limits for the room (PROTOCOL.md §8)
