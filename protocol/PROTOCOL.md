@@ -244,9 +244,10 @@ RoomLimits {                       // JSON, GET /v1/rooms/{room}/limits (members
 }
 ```
 Defaults on the official hosted relay (tunable relay config):
-free = 20 members, 90 days op retention, attachments disabled; boosted = 100 members, unlimited retention, 1 GiB attachments.
+free = 20 members, 20 pending, 90 days op retention, attachments disabled, 5 active invites;
+boosted = 100 members, 50 pending, unlimited retention, 1 GiB attachments, 25 active invites.
 unlimited = all limits `null`, no expiry (operator tier, never sold).
-**Self-hosted relays default to unlimited** (`-limits=none`).
+**Self-hosted relays default to unlimited** (`-limits=none`), i.e. all limits `null` there too.
 
 ### 8.1a Operator tier "unlimited"
 Granted only by the relay operator, two ways:
