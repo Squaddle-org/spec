@@ -1,0 +1,38 @@
+[
+    {
+        "name": "backup-basic",
+        "input": {
+            "passphrase": "Y29ycmVjdCBob3JzZSBiYXR0ZXJ5IHN0YXBsZQ",
+            "entropy": "0tPU1dbX2Nna29zd3t_g4eLj5OXm5-jp6uvs7e7v8PE",
+            "rooms": [
+                {
+                    "roomRef": "ABCDEFGHIJKLMNOP@relay.squaddle.org",
+                    "name": "Board Game Night"
+                },
+                {
+                    "roomRef": "QRSTUVWXYZ234567@relay.squaddle.org"
+                }
+            ],
+            "createdAt": 1700000000,
+            "opsLimit": 3,
+            "memLimit": 8192,
+            "salt": "3N3e3-Dh4uPk5ebn6Onq6w",
+            "nonce": "5ufo6err7O3u7_Dx8vP09fb3-Pn6-_z9"
+        },
+        "expected": {
+            "accept": true,
+            "file": "pAABAaQAamFyZ29uMmlkMTMBAwIZIAADUNzd3t_g4eLj5OXm5-jp6usCWBjm5-jp6uvs7e7v8PHy8_T19vf4-fr7_P0DWJx0wPDnfFUUp6lBLUAPK6-3Fd4MnH9WEGRDvnWBMcuM5vCmq0donBY8hWh1R6qMtXW48nXi6WuoDyNj6oFxm4CeAmb_OjXWibCJS0o8b-VgnJVaVUmPuXxjaHFQgsxZBVoKtp9shSguijk3soCKoylX6as9csN2OgEPaBwPvWBJyNi8cf53spNBpsRAE-IvSyeHwGzLL0I4C3SoC-A"
+        }
+    },
+    {
+        "name": "backup-reject-wrong-passphrase",
+        "input": {
+            "file": "pAABAaQAamFyZ29uMmlkMTMBAwIZIAADUNzd3t_g4eLj5OXm5-jp6usCWBjm5-jp6uvs7e7v8PHy8_T19vf4-fr7_P0DWJx0wPDnfFUUp6lBLUAPK6-3Fd4MnH9WEGRDvnWBMcuM5vCmq0donBY8hWh1R6qMtXW48nXi6WuoDyNj6oFxm4CeAmb_OjXWibCJS0o8b-VgnJVaVUmPuXxjaHFQgsxZBVoKtp9shSguijk3soCKoylX6as9csN2OgEPaBwPvWBJyNi8cf53spNBpsRAE-IvSyeHwGzLL0I4C3SoC-A",
+            "passphrase": "d3JvbmcgcGFzc3BocmFzZSBlbnRpcmVseQ"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "AEAD authentication failed (or wrong passphrase)"
+        }
+    }
+]
