@@ -16,6 +16,7 @@ Planned files (M0/M1):
 | `log-reject.json` | entries that MUST be rejected, with expected error code |
 | `op.json` | OpEnvelope: ad bytes, ct, sig, opId |
 | `invite.json` | inviteSecret → inviteKey → envelope |
+| `snapshot.json` | Snapshot (§4.4): ad bytes (fields 0..4), unsigned CBOR, signing input, sig, plus invalid variants |
 | `request-auth.json` | HTTP request signing input + sig |
 | `backup.json` | Argon2id (low params, test only) → backup file bytes |
 

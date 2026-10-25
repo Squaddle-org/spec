@@ -184,7 +184,25 @@ LWW order: `(lamport, deviceKey bytes)` lexicographic. Unknown types MUST be ign
 `event.*` maps to iCalendar `VEVENT` (RFC 5545) at export time only (`UID = b32(eventId)@squaddle`).
 
 ### 4.4 Snapshots
-`Snapshot { room, epoch, coversUpTo(cursor), nonce, ct = AEAD(epochKey, CBOR(materialized state + seq vector)) , author, device, sig }` domain `"snapshot"`.
+Domain `"snapshot"`.
+```
+Snapshot {
+  0: v           uint = 1
+  1: room        bytes(32)
+  2: epoch       uint
+  3: coversUpTo  uint          ops cursor; this snapshot covers everything up to and incl. it
+  4: nonce       bytes(24)
+  5: ct          bytes         AEAD(epochKey, nonce, CBOR(materialized state + seq vector), ad = CBOR(fields 0..4))
+  6: author      bytes(32)     userKey
+  7: device      bytes(32)     deviceKey (cert resolvable via relay /users/{u}/devices)
+  8: sig         bytes(64)     by device key
+}
+```
+Analogous to §4.1's OpEnvelope: the AEAD associated data is the CBOR of the fields that precede
+`ct` (here 0..4, i.e. `v`‖`room`‖`epoch`‖`coversUpTo`‖`nonce`), and `sig` covers every field except
+itself (0..7), signed by the device key named in field 7 - the relay never decrypts `ct` and
+cannot independently confirm `device` belongs to `author` from this structure alone (same
+limitation as OpEnvelope); it resolves that via `/users/{u}/devices`.
 Relay MAY prune ops with cursor ≤ `coversUpTo` 30 days after a snapshot exists.
 
 ## 5. Relay API
