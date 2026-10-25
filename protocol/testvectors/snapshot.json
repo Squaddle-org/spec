@@ -1,0 +1,52 @@
+[
+    {
+        "name": "snapshot-basic",
+        "input": {
+            "room": "lpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq-wsbKztLU",
+            "epoch": 3,
+            "coversUpTo": 1234,
+            "nonce": "oKGio6SlpqeoqaqrrK2ur7CxsrO0tba3",
+            "ct": "qqusra6vsLGys7S1tre4ubq7vL2-v8DBwsPExcbHyMnKy8zNzs_Q0dLT1NXW19jZ",
+            "author": "G_gN1dt9x3UmPOV1aAWirK9C-bWEPNk8DjOsz54Z6BI",
+            "device": "3hylvnOWcy1vD8jMEEKF6-X6kQPJIlt18WlwHY0rldM"
+        },
+        "expected": {
+            "accept": true,
+            "ad": "pQABAVgglpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq-wsbKztLUCAwMZBNIEWBigoaKjpKWmp6ipqqusra6vsLGys7S1trc",
+            "unsignedCbor": "qAABAVgglpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq-wsbKztLUCAwMZBNIEWBigoaKjpKWmp6ipqqusra6vsLGys7S1trcFWDCqq6ytrq-wsbKztLW2t7i5uru8vb6_wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2NkGWCAb-A3V233HdSY85XVoBaKsr0L5tYQ82TwOM6zPnhnoEgdYIN4cpb5zlnMtbw_IzBBChevl-pEDySJbdfFpcB2NK5XT",
+            "signingInput": "U1FETDFzbmFwc2hvdAC-d_X2pP1T66_-7oKn0UneARzbz9Nw-4fngbc_3H1UpQ",
+            "sig": "dDJnHKpbIPv2CrOGbA1fAY08Zl0BQYA6TVezj1cBPxq6LCOGHOqgK4TP9ei6fYJhd5P7Bse7GRqD5vfIbnPrDQ",
+            "cbor": "qQABAVgglpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq-wsbKztLUCAwMZBNIEWBigoaKjpKWmp6ipqqusra6vsLGys7S1trcFWDCqq6ytrq-wsbKztLW2t7i5uru8vb6_wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2NkGWCAb-A3V233HdSY85XVoBaKsr0L5tYQ82TwOM6zPnhnoEgdYIN4cpb5zlnMtbw_IzBBChevl-pEDySJbdfFpcB2NK5XTCFhAdDJnHKpbIPv2CrOGbA1fAY08Zl0BQYA6TVezj1cBPxq6LCOGHOqgK4TP9ei6fYJhd5P7Bse7GRqD5vfIbnPrDQ"
+        }
+    },
+    {
+        "name": "snapshot-reject-tampered-signature",
+        "input": {
+            "cbor": "qQABAVgglpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq-wsbKztLUCAwMZBNIEWBigoaKjpKWmp6ipqqusra6vsLGys7S1trcFWDCqq6ytrq-wsbKztLW2t7i5uru8vb6_wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2NkGWCAb-A3V233HdSY85XVoBaKsr0L5tYQ82TwOM6zPnhnoEgdYIN4cpb5zlnMtbw_IzBBChevl-pEDySJbdfFpcB2NK5XTCFhAdTJnHKpbIPv2CrOGbA1fAY08Zl0BQYA6TVezj1cBPxq6LCOGHOqgK4TP9ei6fYJhd5P7Bse7GRqD5vfIbnPrDQ"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "signature does not verify"
+        }
+    },
+    {
+        "name": "snapshot-reject-cross-domain-signature",
+        "input": {
+            "cbor": "qQABAVgglpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq-wsbKztLUCAwMZBNIEWBigoaKjpKWmp6ipqqusra6vsLGys7S1trcFWDCqq6ytrq-wsbKztLW2t7i5uru8vb6_wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2NkGWCAb-A3V233HdSY85XVoBaKsr0L5tYQ82TwOM6zPnhnoEgdYIN4cpb5zlnMtbw_IzBBChevl-pEDySJbdfFpcB2NK5XTCFhAnc0iJAG9JK68FuW9wn0-ZSfuIh-c0czhqbWVx-DX0khRYeggizANwZgoBiWxlDzK4Nu4DwHa9ic5Ric4x4QIBg"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "signed under the wrong domain (\"op\" instead of \"snapshot\")"
+        }
+    },
+    {
+        "name": "snapshot-reject-unknown-version",
+        "input": {
+            "cbor": "qQACAVgglpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq-wsbKztLUCAwMZBNIEWBigoaKjpKWmp6ipqqusra6vsLGys7S1trcFWDCqq6ytrq-wsbKztLW2t7i5uru8vb6_wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2NkGWCAb-A3V233HdSY85XVoBaKsr0L5tYQ82TwOM6zPnhnoEgdYIN4cpb5zlnMtbw_IzBBChevl-pEDySJbdfFpcB2NK5XTCFhA7mACF_zF_2WWNOVb58XBEFedqzccVH00TFCxU2dFWi4-PIAzs3bdp5UOQAipRD31xHO7WccOThV7ynpO0VkGCw"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "unknown major v=2"
+        }
+    }
+]
