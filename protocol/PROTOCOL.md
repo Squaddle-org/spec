@@ -106,7 +106,7 @@ used for invite expiry, see §3.5 — trust assumption documented in THREAT_MODE
 | 8 | setRole | `{0:user, 1:role}` role ∈ {admin, member} | owner only |
 | 9 | transferOwner | `{0:user}` | owner only, target is admin. Old owner becomes admin. |
 | 10 | epochRotate | `{0:epoch, 1:[{0:user, 1:sealedKey}]}` | owner/admin; MUST contain exactly the current non-pending members |
-| 11 | roomSettings | `{0:joinApprovalDefault?, …}` | owner/admin |
+| 11 | roomSettings | `{0:joinApprovalDefault?, 1:membersCanCreateEvents?(bool, default true), …}` | owner/admin |
 
 Roles: `owner` (exactly one) > `admin` > `member`; `pending` has no read access.
 
@@ -179,6 +179,9 @@ OpBody { 0: type tstr, 1: payload map }
 | `profile.set` | `{displayName, emoji?}` | own only (per-room display name) |
 
 LWW order: `(lamport, deviceKey bytes)` lexicographic. Unknown types MUST be ignored (forward compat).
+
+`event.create`'s room-setting half (§4.2) is §3.3 row 11 field 1, `membersCanCreateEvents`
+(default `true`).
 
 ### 4.3 Export
 `event.*` maps to iCalendar `VEVENT` (RFC 5545) at export time only (`UID = b32(eventId)@squaddle`).
