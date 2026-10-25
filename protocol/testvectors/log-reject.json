@@ -184,6 +184,22 @@
         }
     },
     {
+        "name": "log-reject-roomSettings-bad-members-can-create-events",
+        "input": {
+            "room": "Njzke_hZeHlAlzCpL6Umtqwp-F2rTFahI3BtrQLgNx0",
+            "prefix": [
+                "qQABAVggNjzke_hZeHlAlzCpL6Umtqwp-F2rTFahI3BtrQLgNx0CAARYINk_lS3fFHGqOgw-AEjbgoaPP5MmhRmOUzC63fiCeI0zBacAAQFYINk_lS3fFHGqOgw-AEjbgoaPP5MmhRmOUzC63fiCeI0zAlggHcXRHkbqnsNF9I_Q014cVB3TwM1q6c__Bh_8pqq2EDIDWCB5tVYuj-ZU-UB4sRLoqYunkB-FOuaVvtfg45ELrQSWZARrT3duZXIgUGhvbmUFGmVT8QAGWEA1Y-AERo_XSrY_eHfhhOxAiSFF7SImP2MxlJ5ILGHc6ty_ewyl-2_SJA_5BG56flaz5PIJ2X-iPgKg533VdT0HBgAHowBQKCkqKywtLi8wMTIzNDU2NwFycmVsYXkuc3F1YWRkbGUub3JnAlgwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBplU_EACVhAhkjteeen9sG3pS8hDdde9c7aAlXWKaEHtA8EyZHJsYE-0F7hjN6Z_Dn1gaVgj7h0ZbzsF67RS99j_4UTykeSDA",
+                "qgABAVggNjzke_hZeHlAlzCpL6Umtqwp-F2rTFahI3BtrQLgNx0CAQNYIMTRWDZG6qRyy7-mkp3TkJP9zlNKeh8Mrpd2aNeDqHuSBFgg2T-VLd8Ucao6DD4ASNuCho8_kyaFGY5TMLrd-IJ4jTMFpwABAVgg2T-VLd8Ucao6DD4ASNuCho8_kyaFGY5TMLrd-IJ4jTMCWCAdxdEeRuqew0X0j9DTXhxUHdPAzWrpz_8GH_ymqrYQMgNYIHm1Vi6P5lT5QHixEuipi6eQH4U65pW-1-DjkQutBJZkBGtPd25lciBQaG9uZQUaZVPxAAZYQDVj4ARGj9dKtj94d-GE7ECJIUXtIiY_YzGUnkgsYdzq3L97DKX7b9IkD_kEbnp-VrPk8gnZf6I-AqDnfdV1PQcGAQejAFAyMzQ1Njc4OTo7PD0-P0BBA_QEZm1lbWJlcggaZVPxAQlYQOn9rUOPLpBCFjxjRZmsJellNOmVjy9JTnixEFPeTkYTOQqUwxjxnMq25TR38KuUzhYPt9Jp3sFj2f8ZI89IVAs",
+                "qgABAVggNjzke_hZeHlAlzCpL6Umtqwp-F2rTFahI3BtrQLgNx0CAgNYIEThmmHUFoqRSbo3bTFG5KIKtYQSpqEjnPOyufoSts5JBFggACHjBBLKQbTPTK1-NWGMRqMo9Af3tPHBq_9rPWzzT8UFpwABAVggACHjBBLKQbTPTK1-NWGMRqMo9Af3tPHBq_9rPWzzT8UCWCB1aql6dKPTUIRPXxp3ppBaG7nMIT9AqYzmoTUZq_rEPQNYIMdXz37JI5DGADhrLL2SsE7rLIbq22l4RxXxHJa4CBRnBGxNZW1iZXIgUGhvbmUFGmVT8QAGWEDjlaWwAz0-gNkyVE8myq6edtuPWQma9VxUBasAPw_sIKZU6zh3RCSoICJr3qjwzAn55Uw8wnJdWgSkyxOLRB4PBgMHoQBQMjM0NTY3ODk6Ozw9Pj9AQQgaZVPxAglYQGpcB_tizCRLvaEpU49Rl42p_s6BRM_6Yy7Z79lA28KzIXKNOxgzYQekMWLDY_ZDh_REHdQlRqX--79MZ7VahAQ"
+            ],
+            "entry": "qgABAVggNjzke_hZeHlAlzCpL6Umtqwp-F2rTFahI3BtrQLgNx0CAwNYIGDy1lvgOg30W27SUDtt0TbpvKckEjGwTdwNS7AfI0XuBFgg2T-VLd8Ucao6DD4ASNuCho8_kyaFGY5TMLrd-IJ4jTMFpwABAVgg2T-VLd8Ucao6DD4ASNuCho8_kyaFGY5TMLrd-IJ4jTMCWCAdxdEeRuqew0X0j9DTXhxUHdPAzWrpz_8GH_ymqrYQMgNYIHm1Vi6P5lT5QHixEuipi6eQH4U65pW-1-DjkQutBJZkBGtPd25lciBQaG9uZQUaZVPxAAZYQDVj4ARGj9dKtj94d-GE7ECJIUXtIiY_YzGUnkgsYdzq3L97DKX7b9IkD_kEbnp-VrPk8gnZf6I-AqDnfdV1PQcGCwehAWpub3QtYS1ib29sCBplU_EDCVhAYTiW9nfojs5mQV5VJc4Ss3aQy11cJkkbi1EuaCber8O_1EmtlWgP8gTA01ItNkEVB2H19teJiqFKunZJZ4VdDg"
+        },
+        "expected": {
+            "accept": false,
+            "reason": "Invalid(why=roomSettings membersCanCreateEvents must be a bool)"
+        }
+    },
+    {
         "name": "log-reject-stale-head",
         "input": {
             "room": "Njzke_hZeHlAlzCpL6Umtqwp-F2rTFahI3BtrQLgNx0",

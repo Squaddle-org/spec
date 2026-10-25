@@ -5,13 +5,14 @@
             "method": "GET",
             "pathAndQuery": "/v1/rooms/YmFzZTMycm9vbWlk/log",
             "ts": 1700000000,
+            "nonce": "CgsMDQ4PEBESExQVFhcYGQ",
             "body": "",
             "device": "MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs"
         },
         "expected": {
-            "signingInput": "U1FETDFyZXEAKZeKrZLO5T6LpgXjl3gpw9OMuJUN7OCH2cjgISe8MHc",
-            "sig": "dpPB1-Jfetbb3GMk72ub_Ewp9m-4b-N80xQtFiFYV8cpNhCeMgbkVbqW8r2QFnVNAccRXYNbjTQE-4jB2-zCAw",
-            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000000, sig=dpPB1-Jfetbb3GMk72ub_Ewp9m-4b-N80xQtFiFYV8cpNhCeMgbkVbqW8r2QFnVNAccRXYNbjTQE-4jB2-zCAw"
+            "signingInput": "U1FETDFyZXEAHAF9-1W0Sfoy4J-bmtLjlz298DyyOwC3ujUxIeBKByU",
+            "sig": "zwQQbom21Xepb1QVMhoZtqRB8zL3rYvqA0ko3wsGrQNawJyKpYjGMpgVv1ZwyorkIKZyt-n-iUwQrXIpO8i3Dw",
+            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000000, nonce=CgsMDQ4PEBESExQVFhcYGQ, sig=zwQQbom21Xepb1QVMhoZtqRB8zL3rYvqA0ko3wsGrQNawJyKpYjGMpgVv1ZwyorkIKZyt-n-iUwQrXIpO8i3Dw"
         }
     },
     {
@@ -20,13 +21,14 @@
             "method": "GET",
             "pathAndQuery": "/v1/rooms/YmFzZTMycm9vbWlk/ops?after=5&limit=100",
             "ts": 1700000100,
+            "nonce": "Hh8gISIjJCUmJygpKissLQ",
             "body": "",
             "device": "MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs"
         },
         "expected": {
-            "signingInput": "U1FETDFyZXEAAuh7aFk5i9rDUXI6DXm_Yw7d0fG1B_glBPWB90KJSGk",
-            "sig": "o6euqJjYNiAqxe1EmA_PK9wGvojKu5N7zKWU-kZtv47P04QuxVn9FgKvhVOc_2DUPkrIv17sgbjTpaC1XdNUDw",
-            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000100, sig=o6euqJjYNiAqxe1EmA_PK9wGvojKu5N7zKWU-kZtv47P04QuxVn9FgKvhVOc_2DUPkrIv17sgbjTpaC1XdNUDw"
+            "signingInput": "U1FETDFyZXEAHKwRAE56TzZ1KEJIysNYORqP1D0eQp2CMRucgWoW70Q",
+            "sig": "bU_uM62G1k0NFx1H44YE3Lgh2nCecFBxI5q55wYfBXT8sGM8jX5y21FsQ4U38QGuVTh_p7ATx_lo2f9GZSVnDw",
+            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000100, nonce=Hh8gISIjJCUmJygpKissLQ, sig=bU_uM62G1k0NFx1H44YE3Lgh2nCecFBxI5q55wYfBXT8sGM8jX5y21FsQ4U38QGuVTh_p7ATx_lo2f9GZSVnDw"
         }
     },
     {
@@ -35,13 +37,14 @@
             "method": "POST",
             "pathAndQuery": "/v1/rooms/YmFzZTMycm9vbWlk/ops",
             "ts": 1700000200,
+            "nonce": "MjM0NTY3ODk6Ozw9Pj9AQQ",
             "body": "gQA",
             "device": "MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs"
         },
         "expected": {
-            "signingInput": "U1FETDFyZXEAxzsYK5FXCrVQ78BduhMi3PZu5WvHRhtRQLNjOai6f0k",
-            "sig": "uCMYebq3TFmtWm2sVx5-gWQYBl3L-coR348G6ywLsAJQ30egr9E8FFQEdvJvkpk9dMFGneDeKO4MLXgpDIhhAQ",
-            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000200, sig=uCMYebq3TFmtWm2sVx5-gWQYBl3L-coR348G6ywLsAJQ30egr9E8FFQEdvJvkpk9dMFGneDeKO4MLXgpDIhhAQ"
+            "signingInput": "U1FETDFyZXEAQ4I4nOIXZje9xP2_Nv75dwY4xU_fYTZTOUAO0lyEedQ",
+            "sig": "oPvQGWe8zH217-s86GHEyjDylDZIPCO09liEV5Qzlecvq9_4uWj_98cLrTjjav7DUJnTPdcGJbrAykVdH-1BDA",
+            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000200, nonce=MjM0NTY3ODk6Ozw9Pj9AQQ, sig=oPvQGWe8zH217-s86GHEyjDylDZIPCO09liEV5Qzlecvq9_4uWj_98cLrTjjav7DUJnTPdcGJbrAykVdH-1BDA"
         }
     },
     {
@@ -50,13 +53,14 @@
             "method": "PUT",
             "pathAndQuery": "/v1/users/dXNlcg/devices/ZGV2aWNl",
             "ts": 1700000300,
+            "nonce": "RkdISUpLTE1OT1BRUlNUVQ",
             "body": "ZGV2aWNlLWNlcnQtYnl0ZXM",
             "device": "MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs"
         },
         "expected": {
-            "signingInput": "U1FETDFyZXEA6Cg5AHxfF46pUjrdUvjaFzAbBmRSwQ_7tvVLJFFttjA",
-            "sig": "LM1hUboJ4QTs6JVFwUGc2DLvjMke1EXuCt6-5mWXcFiSIqSjfJDLKbQfFNxmTXSKm20_rv0Aq_2rNIhKY7zCCg",
-            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000300, sig=LM1hUboJ4QTs6JVFwUGc2DLvjMke1EXuCt6-5mWXcFiSIqSjfJDLKbQfFNxmTXSKm20_rv0Aq_2rNIhKY7zCCg"
+            "signingInput": "U1FETDFyZXEALX2o_Um3_Xdau7Vw7a1Udtuk0haGaKFaoW0opPc2tao",
+            "sig": "Hf9bClh8zyZ882NKGNiB0P5LjE79KglY_s1q0cXWMRH9Ehk0BHCGgKWCsomynMPJb7ho6x8FdUoutc4FhYHTCw",
+            "header": "SQDL1 device=MrU-iC49qsGA16X2Ik1htkAbQ_kB2wnw5NhM5OSicYs, ts=1700000300, nonce=RkdISUpLTE1OT1BRUlNUVQ, sig=Hf9bClh8zyZ882NKGNiB0P5LjE79KglY_s1q0cXWMRH9Ehk0BHCGgKWCsomynMPJb7ho6x8FdUoutc4FhYHTCw"
         }
     }
 ]
