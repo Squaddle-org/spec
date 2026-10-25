@@ -46,11 +46,28 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
       temp-file SQLite, not mocked)
 
 ## M3 — Content plane + sync client · repos: core, spec
-- [ ] OpEnvelope encrypt/sign/verify, op bodies (§4.2), LWW materializer with authorization
-- [ ] SQLDelight local store (ops, log, cursors, outbox)
-- [ ] Sync client (Ktor): pull/push, stale_head / stale_epoch retry, outbox re-encryption
-- [ ] Snapshot create/apply
-- [ ] JVM CLI harness (`core` test app) to drive two identities end-to-end
+- [x] OpEnvelope encrypt/sign/verify (§4.1), op bodies (§4.2) + RoomState LWW materializer with
+      per-epoch authorization - vectors `op.json` (1 valid + 4 reject: tampered sig, wrong epoch
+      key, tampered ad, device not certified for author); kotest permutation property test
+      (fold() order-independence) + one authorization-reject case per §4.2 row + an epoch-boundary
+      case. `event.create`'s "member if room setting allows" half is NOT implemented - needs a
+      `roomSettings` field number §3.3 never gives; only the admin/owner half works.
+- [x] Request auth (§5) signing - vectors `request-auth.json`, verified on both core and relay
+      (`TestRequestAuthVectors`, the real cross-implementation check for this section)
+- [x] SQLDelight local store (log_entries, ops, cursors, device_seq, outbox, invite_secrets,
+      epoch_keys) - JVM driver + Android driver (compile-checked only, no device/emulator here)
+- [x] Sync client (Ktor, OkHttp engine): pull/push, `stale_head`/`stale_epoch` retry (re-encrypts
+      the outbox from its retained plaintext body under the new key), `rotation_required`
+      auto-rotate for owner/admin (else waits), invite create/join incl. envelope re-upload after
+      rotation, WebSocket live updates (§6)
+- [x] Snapshot create/apply on the §4.4 outer envelope - inner "materialized state + seq vector"
+      format is implementation-internal (§4.4 gives it no field table, unlike every other
+      structure - nothing cross-implementation to settle)
+- [x] Backup file (§7) - vectors `backup.json` (low, test-only Argon2id params)
+- [x] JVM CLI harness (`core/cli`, 8 subcommands) - verified by hand against a real relay process
+      (identity/room/invite/join/idea/vote/kick, convergent state); integration test drives 3 real
+      identities through the full lifecycle incl. kick against the actual relay binary (not a
+      mock), asserting the kicked member loses ops read and the rest converge byte-for-byte
 
 ## M4 — Android app · repos: android, website
 - [ ] Onboarding: create identity, show seed, set display name
