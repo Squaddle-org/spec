@@ -212,9 +212,10 @@ Relay MAY prune ops with cursor ≤ `coversUpTo` 30 days after a snapshot exists
 See `relay-api.yaml`. Limits/boosts: §8. Summary:
 
 - **Auth header** for writes and member reads:
-  `Authorization: SQDL1 device=<b64>, ts=<unix>, sig=<b64>`
-  over `"SQDL1" ‖ "req" ‖ 0x00 ‖ BLAKE2b(method ‖ "\n" ‖ path+query ‖ "\n" ‖ ts ‖ "\n" ‖ BLAKE2b(body))`.
-  Relay rejects `|now − ts| > 60s` and replays within the window (nonce cache keyed by sig).
+  `Authorization: SQDL1 device=<b64>, ts=<unix>, nonce=<b64>, sig=<b64>`
+  over `"SQDL1" ‖ "req" ‖ 0x00 ‖ BLAKE2b(method ‖ "\n" ‖ path+query ‖ "\n" ‖ ts ‖ "\n" ‖ nonce ‖ BLAKE2b(body))`.
+  `nonce` is 16 random bytes, fresh per request. Relay rejects `|now − ts| > 60s` and replays
+  within the window (cache keyed by `nonce`).
 - Read access to ops/snapshots: device's user is member/admin/owner (not pending, not removed).
 - Unauthenticated: `GET /v1/invites/{room}/{inviteId}/envelope` (rate-limited per IP), `/healthz`, `/metrics` (internal port).
 

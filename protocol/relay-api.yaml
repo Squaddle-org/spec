@@ -13,7 +13,7 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      description: 'SQDL1 device=<b64>, ts=<unix>, sig=<b64> (see PROTOCOL.md §5)'
+      description: 'SQDL1 device=<b64>, ts=<unix>, nonce=<b64>, sig=<b64> (see PROTOCOL.md §5)'
   schemas:
     Error:
       type: object
