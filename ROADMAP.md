@@ -50,8 +50,8 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
       per-epoch authorization - vectors `op.json` (1 valid + 4 reject: tampered sig, wrong epoch
       key, tampered ad, device not certified for author); kotest permutation property test
       (fold() order-independence) + one authorization-reject case per §4.2 row + an epoch-boundary
-      case. `event.create`'s "member if room setting allows" half is NOT implemented - needs a
-      `roomSettings` field number §3.3 never gives; only the admin/owner half works.
+      case. `event.create`'s "member if room setting allows" half is now implemented too, via
+      §3.3 row 11 field 1 (`membersCanCreateEvents`, default `true`) - closed in v1.0.0-draft.2.
 - [x] Request auth (§5) signing - vectors `request-auth.json`, verified on both core and relay
       (`TestRequestAuthVectors`, the real cross-implementation check for this section)
 - [x] SQLDelight local store (log_entries, ops, cursors, device_seq, outbox, invite_secrets,
@@ -68,6 +68,13 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
       (identity/room/invite/join/idea/vote/kick, convergent state); integration test drives 3 real
       identities through the full lifecycle incl. kick against the actual relay binary (not a
       mock), asserting the kicked member loses ops read and the rest converge byte-for-byte
+
+## Spec v1.0.0-draft.2
+- §5 request auth: added a random 16-byte `nonce` to the Authorization header and the signing
+  input; relay's replay cache is now keyed by `nonce` instead of `sig` (closes the
+  deterministic-Ed25519-signature false-positive a same-second repeat request used to hit).
+- §3.3 `roomSettings`: added field 1, `membersCanCreateEvents` (bool, default `true`) - the
+  missing field `event.create`'s "member if room setting allows" half (§4.2) needed.
 
 ## M4 — Android app · repos: android, website
 - [ ] Onboarding: create identity, show seed, set display name
