@@ -1,0 +1,85 @@
+[
+    {
+        "name": "op-basic",
+        "input": {
+            "room": "PD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWls",
+            "epoch": 1,
+            "author": "R_CxntPMDyB7IxJUlci5i6CwVZ0U1nhNv1aVP0YLbY0",
+            "device": "_iox6V6b3BnEJbbhFaqJuv9gTS46HjSRc5Cr6ViPB8E",
+            "seq": 1,
+            "lamport": 1,
+            "nonce": "RkdISUpLTE1OT1BRUlNUVVZXWFlaW1xd",
+            "epochKey": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
+            "body": {
+                "type": "idea.create"
+            }
+        },
+        "expected": {
+            "accept": true,
+            "ad": "qAABAVggPD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWlsCAQNYIEfwsZ7TzA8geyMSVJXIuYugsFWdFNZ4Tb9WlT9GC22NBFgg_iox6V6b3BnEJbbhFaqJuv9gTS46HjSRc5Cr6ViPB8EFAQYBB1gYRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xd",
+            "unsignedCbor": "qQABAVggPD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWlsCAQNYIEfwsZ7TzA8geyMSVJXIuYugsFWdFNZ4Tb9WlT9GC22NBFgg_iox6V6b3BnEJbbhFaqJuv9gTS46HjSRc5Cr6ViPB8EFAQYBB1gYRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdCFhZdMlrQK-HwYFnAwiIeN7BsZs1wWdbIqQdLxK48eyHZ-C2Csj-JVVrm4WlkkYL20kozbJJ42YX9_v8lPaZ-X-2YbR6FmkWzswIehISLwOOp-Laymf9Exfgv6w",
+            "signingInput": "U1FETDFvcAB8bWgwJFNKkjiqFug-9j-ceMQjcXSgl0Bkkx7DDUsdnA",
+            "sig": "xmcnOmBC_pP7BmUwFWzJNUWxcjDeueXYDS6g1lLvUyip9VfFzdowMVs8j1ve8tEHx9wa1Mjgz1ZgpB5pjfSyDA",
+            "cbor": "qgABAVggPD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWlsCAQNYIEfwsZ7TzA8geyMSVJXIuYugsFWdFNZ4Tb9WlT9GC22NBFgg_iox6V6b3BnEJbbhFaqJuv9gTS46HjSRc5Cr6ViPB8EFAQYBB1gYRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdCFhZdMlrQK-HwYFnAwiIeN7BsZs1wWdbIqQdLxK48eyHZ-C2Csj-JVVrm4WlkkYL20kozbJJ42YX9_v8lPaZ-X-2YbR6FmkWzswIehISLwOOp-Laymf9Exfgv6wJWEDGZyc6YEL-k_sGZTAVbMk1RbFyMN655dgNLqDWUu9TKKn1V8XN2jAxWzyPW97y0QfH3BrUyODPVmCkHmmN9LIM",
+            "opId": "JoU7Nr6ZTSVDR2t06CJ3PA_IAKH9Y3059_OvLELawUQ",
+            "plaintextCbor": "ogBraWRlYS5jcmVhdGUBpABQZGVmZ2hpamtsbW5vcHFycwFsQ2FtcGluZyB0cmlwAmxsb25nIHdlZWtlbmQDgWhvdXRkb29ycw"
+        }
+    },
+    {
+        "name": "op-reject-tampered-signature",
+        "input": {
+            "cbor": "qgABAVggPD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWlsCAQNYIEfwsZ7TzA8geyMSVJXIuYugsFWdFNZ4Tb9WlT9GC22NBFgg_iox6V6b3BnEJbbhFaqJuv9gTS46HjSRc5Cr6ViPB8EFAQYBB1gYRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdCFhZdMlrQK-HwYFnAwiIeN7BsZs1wWdbIqQdLxK48eyHZ-C2Csj-JVVrm4WlkkYL20kozbJJ42YX9_v8lPaZ-X-2YbR6FmkWzswIehISLwOOp-Laymf9Exfgv6wJWEDHZyc6YEL-k_sGZTAVbMk1RbFyMN655dgNLqDWUu9TKKn1V8XN2jAxWzyPW97y0QfH3BrUyODPVmCkHmmN9LIM",
+            "epochKey": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
+            "certs": [
+                "pwABAVggR_CxntPMDyB7IxJUlci5i6CwVZ0U1nhNv1aVP0YLbY0CWCAuvhISVaYVWcfEptrQm6mD6Sru_TdAO0EIQzb-zYitDANYIP4qMelem9wZxCW24RWqibr_YE0uOh40kXOQq-lYjwfBBGtPd25lciBQaG9uZQUaZVPxAAZYQMXaSuYIWLDedeDqDvcxbulFRakWpJ6XOLcUUZyEz1S45LaK55nZaCKTjBkVtSmJOzRwGJm2-h_YXZ_nZ-eL-A4"
+            ]
+        },
+        "expected": {
+            "accept": false,
+            "reason": "signature does not verify"
+        }
+    },
+    {
+        "name": "op-reject-wrong-epoch-key",
+        "input": {
+            "cbor": "qgABAVggPD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWlsCAQNYIEfwsZ7TzA8geyMSVJXIuYugsFWdFNZ4Tb9WlT9GC22NBFgg_iox6V6b3BnEJbbhFaqJuv9gTS46HjSRc5Cr6ViPB8EFAQYBB1gYRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdCFhZdMlrQK-HwYFnAwiIeN7BsZs1wWdbIqQdLxK48eyHZ-C2Csj-JVVrm4WlkkYL20kozbJJ42YX9_v8lPaZ-X-2YbR6FmkWzswIehISLwOOp-Laymf9Exfgv6wJWEDGZyc6YEL-k_sGZTAVbMk1RbFyMN655dgNLqDWUu9TKKn1V8XN2jAxWzyPW97y0QfH3BrUyODPVmCkHmmN9LIM",
+            "epochKey": "WltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHk",
+            "certs": [
+                "pwABAVggR_CxntPMDyB7IxJUlci5i6CwVZ0U1nhNv1aVP0YLbY0CWCAuvhISVaYVWcfEptrQm6mD6Sru_TdAO0EIQzb-zYitDANYIP4qMelem9wZxCW24RWqibr_YE0uOh40kXOQq-lYjwfBBGtPd25lciBQaG9uZQUaZVPxAAZYQMXaSuYIWLDedeDqDvcxbulFRakWpJ6XOLcUUZyEz1S45LaK55nZaCKTjBkVtSmJOzRwGJm2-h_YXZ_nZ-eL-A4"
+            ]
+        },
+        "expected": {
+            "accept": false,
+            "reason": "AEAD authentication failed"
+        }
+    },
+    {
+        "name": "op-reject-tampered-ad",
+        "input": {
+            "cbor": "qgABAVggPD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWlsCAgNYIEfwsZ7TzA8geyMSVJXIuYugsFWdFNZ4Tb9WlT9GC22NBFgg_iox6V6b3BnEJbbhFaqJuv9gTS46HjSRc5Cr6ViPB8EFAQYBB1gYRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdCFhZdMlrQK-HwYFnAwiIeN7BsZs1wWdbIqQdLxK48eyHZ-C2Csj-JVVrm4WlkkYL20kozbJJ42YX9_v8lPaZ-X-2YbR6FmkWzswIehISLwOOp-Laymf9Exfgv6wJWECcbBhliPA7iREKY5cND2m8MiKrykNWdrPN-obqiw-bFzyK7ggWgW7-Ee8EZ58sbFWZSvEYiwYS3O_AiJgQbMkP",
+            "epochKey": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
+            "certs": [
+                "pwABAVggR_CxntPMDyB7IxJUlci5i6CwVZ0U1nhNv1aVP0YLbY0CWCAuvhISVaYVWcfEptrQm6mD6Sru_TdAO0EIQzb-zYitDANYIP4qMelem9wZxCW24RWqibr_YE0uOh40kXOQq-lYjwfBBGtPd25lciBQaG9uZQUaZVPxAAZYQMXaSuYIWLDedeDqDvcxbulFRakWpJ6XOLcUUZyEz1S45LaK55nZaCKTjBkVtSmJOzRwGJm2-h_YXZ_nZ-eL-A4"
+            ]
+        },
+        "expected": {
+            "accept": false,
+            "reason": "AEAD authentication failed"
+        }
+    },
+    {
+        "name": "op-reject-device-not-certified",
+        "input": {
+            "cbor": "qgABAVggPD0-P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWlsCAQNYIEfwsZ7TzA8geyMSVJXIuYugsFWdFNZ4Tb9WlT9GC22NBFggujxzXNvkI15srfgcQSuIOjRy0QRfrqGJ9YT4vspG40MFAQYBB1gYRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdCFhZdMlrQK-HwYFnAwiIeN7BsZs1wWdbIqQdLxK48eyHZ-C2Csj-JVVrm4WlkkYL20kozbJJ42YX9_v8lPaZ-X-2YbR6FmkWzswIetVQ3VQL2cSXCflExz31TCYJWEDQDiajB-C6fjq7jOtuQwn1Cu1xjbSAcKso8JF2ElARAYToIVOP4ttxkabftBMiUwuM_nESNgka6Zf3JrftTzEO",
+            "epochKey": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
+            "certs": [
+                "pwABAVggR_CxntPMDyB7IxJUlci5i6CwVZ0U1nhNv1aVP0YLbY0CWCAuvhISVaYVWcfEptrQm6mD6Sru_TdAO0EIQzb-zYitDANYIP4qMelem9wZxCW24RWqibr_YE0uOh40kXOQq-lYjwfBBGtPd25lciBQaG9uZQUaZVPxAAZYQMXaSuYIWLDedeDqDvcxbulFRakWpJ6XOLcUUZyEz1S45LaK55nZaCKTjBkVtSmJOzRwGJm2-h_YXZ_nZ-eL-A4",
+                "pwABAVgggz5MWY3Me2LcCkAu4qWYm3e0r5sIv4txhlOCiqBimuwCWCCuH5RrX5ba-JJUTWLiTYySzyAcHZW4S9bpssWquR-SMANYILo8c1zb5CNebK34HEEriDo0ctEEX66hifWE-L7KRuNDBG5JbXBvc3RvciBQaG9uZQUaZVPxAAZYQE5CXWLexh0GxWXetig6dhGAnE_ems4wM_Wk-nFV-VafbGA8_lwd7LcIR5X3zD-vyzQ31JrF3IDQaUPR1-FBkgw"
+            ]
+        },
+        "expected": {
+            "accept": false,
+            "reason": "device not certified for author"
+        }
+    }
+]
