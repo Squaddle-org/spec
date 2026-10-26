@@ -49,6 +49,24 @@ paths:
       parameters: [ { name: user, in: path, required: true, schema: { type: string } } ]
       requestBody: { required: true, content: { application/cbor: {} } }
       responses: { '204': { description: stored } }
+  /users/{user}/rooms:
+    get:
+      summary: List rooms on this relay where {user} currently holds an active role (not pending). Self-only - caller's device must belong to {user} (PROTOCOL.md §5).
+      parameters: [ { name: user, in: path, required: true, schema: { type: string } } ]
+      responses:
+        '200':
+          description: JSON array of {roomId, relayHost}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: [roomId, relayHost]
+                  properties:
+                    roomId: { type: string }
+                    relayHost: { type: string }
+        '403': { description: forbidden - caller's device does not belong to {user} }
   /rooms:
     post:
       summary: Create room from a genesis LogEntry (CBOR)

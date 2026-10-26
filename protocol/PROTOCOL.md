@@ -217,6 +217,10 @@ See `relay-api.yaml`. Limits/boosts: §8. Summary:
   `nonce` is 16 random bytes, fresh per request. Relay rejects `|now − ts| > 60s` and replays
   within the window (cache keyed by `nonce`).
 - Read access to ops/snapshots: device's user is member/admin/owner (not pending, not removed).
+- `GET /users/{user}/rooms`: caller's device must belong to `{user}` (self-only) - returns every
+  room on this relay where `{user}` currently holds an active role, with each room's own recorded
+  `relayHost` (§3.3 row 0 field 1). Scoped to the relay being asked: a user with rooms spread
+  across multiple relays needs to ask each one (no cross-relay discovery exists or is added here).
 - Unauthenticated: `GET /v1/invites/{room}/{inviteId}/envelope` (rate-limited per IP), `/healthz`, `/metrics` (internal port).
 
 ## 6. Push
