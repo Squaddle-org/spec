@@ -13,7 +13,8 @@ measured via real spikes (branches `spike/adr-0009-js-ir` / `spike/adr-0009-wasm
 (c) A standalone TypeScript reimplementation of the protocol (no `core` reuse).
 
 ## Decision
-**(a), with a known upstream blocker to fix before `webclient` can ship**: real `js(IR)` target.
+**(a)**: real `js(IR)` target. Its crypto-bridge bundling blocker is fixed (a committed webpack
+shim); runtime correctness in a real browser is the one thing still open (see Consequences).
 
 - **(a) js(IR)** - `commonMain` compiles for `js(IR)` with no structural changes (the module's
   only `expect`/`actual` pairs - `createHttpClient`/`nowUnixSeconds`/`createSqlDriver` - are
@@ -21,21 +22,29 @@ measured via real spikes (branches `spike/adr-0009-js-ir` / `spike/adr-0009-wasm
   `java.util.Formatter`, blocks every non-JVM target) in `RoomState.kt`, `SnapshotState.kt`,
   `SyncClient.kt`, `CanonicalCborTest.kt` - a fifth call site (`MembershipStateImpl.kt`) had
   already been ported to a portable hex-encoder, these four hadn't; worth consolidating into one
-  shared helper when this lands for real. **Blocker**: the pinned crypto dependency
+  shared helper when this lands for real. **Crypto bridge**: the pinned crypto dependency
   (`com.ionspin.kotlin:multiplatform-crypto-libsodium-bindings:0.9.5`, confirmed the latest
   release) does publish a `js` variant, but its generated bridge code statically ESM-imports named
   bindings (`crypto_generichash`, `_sodium_init`, `ready`, ...) from a package literally named
-  `libsodium-sumo`, while its own `package.json` declares the dependency under a *different* name,
-  `libsodium-wrappers-sumo` - confirmed directly against the resolved `node_modules` tree. Worse:
-  even pointed at the right package, no version of it (checked up to the current latest, 0.8.4)
-  exposes the actual crypto functions as static ESM exports - they're attached to the
-  default-exported module object dynamically, after `ready()` resolves, which is incompatible with
-  static import analysis by the shape of the library, not a stale pin. `jsBrowserTest`'s webpack
-  bundle step fails before a browser ever launches (no headless Chromium was available in the
-  spike environment either, a separate, orthogonal gap). Bundle size and the `wasm-unsafe-eval` CSP
-  question are consequently **not measured** - blocked upstream of producing a working bundle.
-  SqlDelight's browser story is real but non-trivial: `app.cash.sqldelight:web-worker-driver-js`
-  exists (2.4.1+) but needs a Web Worker + SQL.js wired up - deferred past the spike, not solved.
+  `libsodium-sumo`, whose real ESM build has no static named exports at all (`export default
+  Module` only - the raw Emscripten exports are attached to that object dynamically, after
+  `ready()` resolves) - confirmed directly against the resolved `node_modules` tree, not a stale
+  version pin. **Fixed** (not just diagnosed) via a `webpack.config.d` shim: a hand-written module
+  aliased onto the literal `'libsodium-sumo'` import specifier that lazily forwards each needed
+  symbol to the real Module object's properties at *call* time rather than import time (sidesteps
+  a second, separate incompatibility this surfaced too - `libsodium-wrappers-sumo`'s own internals
+  do a bare, synchronous `require('libsodium-sumo')` that cannot consume an async ES module using
+  top-level await) plus a `resolve.fallback` for a dead-code Node `url`/`path` import inside
+  `libsodium-sumo`'s own polyfill that webpack's static analysis doesn't see through a runtime
+  guard for. Result: `jsBrowserTest`'s webpack bundle step now succeeds with **zero** resolution
+  errors. **Still unverified**: actual runtime correctness in a real browser - no headless
+  Chromium could be launched in the spike environment (downloaded a real one via Playwright, but
+  it needs root to install missing shared libraries the sandbox doesn't have and couldn't grant);
+  this is the literal next step once real development resumes with normal tooling access, not a
+  remaining code or config problem. Bundle size and the `wasm-unsafe-eval` CSP question are
+  likewise unmeasured pending that same real-browser check. SqlDelight's browser story is real but
+  non-trivial: `app.cash.sqldelight:web-worker-driver-js` exists (2.4.1+) but needs a Web Worker +
+  SQL.js wired up - deferred past the spike, not solved.
 - **(b) wasmJs** - real negative repro: adding `wasmJs { browser() }` and running
   `:wasmJsMainClasses` fails at dependency resolution outright, Gradle exhaustively checking every
   published variant of the pinned crypto library (jvm, androidJvm, every native target, js) and
@@ -66,14 +75,16 @@ origin also gives full IndexedDB/localStorage storage-partition isolation betwee
 site and whatever holds the wrapped seed. Net effect on `website/nginx.conf`: zero diff.
 
 ## Consequences
-+ One protocol implementation stays true across jvm/android/js once the blocker is fixed - no
-  second CBOR/membership/crypto surface to keep in sync with the spec.
++ One protocol implementation stays true across jvm/android/js - no second CBOR/membership/crypto
+  surface to keep in sync with the spec.
 + `core`'s own portability gap (four JVM-only `String.format` calls) is now a known, fixed, cited
   finding rather than a silent landmine for any future non-JVM target (iOS included, M6).
-− `webclient` cannot start on real cryptography until `multiplatform-crypto-libsodium-bindings`'s
-  `js` bridge is fixed (upstream PR) or vendored/patched locally (e.g. a webpack alias shimming
-  static exports onto the dynamically-populated module) - this is now the literal first blocking
-  task for M5a's `core` work, not a nice-to-have.
++ The crypto bridge's bundling blocker is fixed, not just diagnosed - a committed
+  `webpack.config.d` shim (two small files), not an upstream dependency.
+− Runtime correctness of that fix is still unverified against a real browser - no headless
+  Chromium could launch in the spike environment (missing shared libraries, no root to install
+  them). Verifying this for real is the literal first task once `core`'s `js(IR)` target lands
+  somewhere with normal tooling access - treat it as open until then, not assumed working.
 − SqlDelight's browser-persistence story (Web Worker + SQL.js) is real but unintegrated; the
   `webclient` scaffold's local-storage layer has to solve this from scratch, not copy a working
   pattern from `jvmMain`/`androidMain`.

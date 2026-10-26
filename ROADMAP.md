@@ -96,8 +96,9 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
 
 ## M5 — Web client / PWA + device linking · repos: webclient (new), core, website
 - [x] Decide: Compose/Wasm vs TS client against spec (ADR-0009) - `core`'s `js(IR)` target,
-      hosted at `app.squaddle.org`. One known blocker before real crypto works in-browser: the
-      pinned libsodium bindings' `js` artifact needs a fix/vendor patch first (see ADR-0009).
+      hosted at `app.squaddle.org`. The pinned libsodium bindings' `js` artifact's bundling
+      blocker is fixed via a committed webpack shim; runtime correctness against a real browser
+      is still unverified (see ADR-0009) - confirm this before building on top of it.
 - [ ] Device linking via QR (§2.3), device list + revoke
 - [ ] PWA install + Web Push (UnifiedPush-compatible endpoint or Web Push via relay)
 - [ ] Strict CSP, no third-party JS, SRI
