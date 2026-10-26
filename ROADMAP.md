@@ -76,6 +76,13 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
 - §3.3 `roomSettings`: added field 1, `membersCanCreateEvents` (bool, default `true`) - the
   missing field `event.create`'s "member if room setting allows" half (§4.2) needed.
 
+## Spec v1.0.0-draft.3
+- §5: added `GET /users/{user}/rooms` (self-only) - lists every room on the relay where `{user}`
+  holds an active role, with each room's recorded `relayHost` (§3.3 row 0 field 1, now persisted
+  by the relay instead of only living inside the opaque genesis blob). Closes a seed-only-restore
+  gap: recovering an identity from the seed alone previously recovered no room membership at all,
+  since nothing let a client ask "which rooms am I in" without an existing local log copy.
+
 ## M4 — Android app · repos: android, website
 - [ ] Onboarding: create identity, show seed, set display name
 - [ ] Rooms list, room view (ideas sorted by score, vote, comment), create idea
