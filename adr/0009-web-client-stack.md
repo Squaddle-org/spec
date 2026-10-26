@@ -60,9 +60,16 @@ Consequences for what's still open.
   `core`'s surface gets `@JsExport`ed, and revisit before M5a ships if it's a problem. Still open:
   an actual browser DOM/CSP-enforcement check (`wasm-unsafe-eval` requirement, specifically) - V8
   running under Node enforces no CSP at all, so that one question genuinely needs a real browser,
-  unlike the cryptographic-correctness question above. SqlDelight's browser story is real but
-  non-trivial: `app.cash.sqldelight:web-worker-driver-js` exists (2.4.1+) but needs a Web Worker +
-  SQL.js wired up - still deferred, not solved.
+  unlike the cryptographic-correctness question above. **Persistence**: no official SqlDelight
+  browser driver is usable here - the only one that exists, `web-worker-driver-js`, is async by
+  construction (`generateAsync`), but `commonMain`'s generated `SquaddleDb` queries are
+  synchronous and shared with jvm/android; switching the whole module to async for one target's
+  benefit wasn't an option. **Closed**: `SqlJsDriver` hand-implements the synchronous `SqlDriver`
+  interface directly against sql.js (own SAVEPOINT-based nested-transaction support included),
+  verified end to end through `LocalStore`'s real generated queries via the same Vitest path as
+  the identity check above - genuine `CREATE TABLE`/`INSERT`/byte-exact `SELECT` round-trips, not
+  a mock. In-memory only for now; sql.js's own `export()`/`import()` would be the next step for
+  persistence across page reloads, not done here.
 - **(b) wasmJs** - real negative repro: adding `wasmJs { browser() }` and running
   `:wasmJsMainClasses` fails at dependency resolution outright, Gradle exhaustively checking every
   published variant of the pinned crypto library (jvm, androidJvm, every native target, js) and
@@ -108,9 +115,13 @@ site and whatever holds the wrapped seed. Net effect on `website/nginx.conf`: ze
 − A real browser DOM/CSP check (specifically: is `wasm-unsafe-eval` actually required) is still
   open - V8-under-Node enforces no CSP, so this is a genuinely different question from the
   cryptographic-correctness one above, which real-browser access isn't needed to answer.
-− SqlDelight's browser-persistence story (Web Worker + SQL.js) is real but unintegrated; the
-  `webclient` scaffold's local-storage layer has to solve this from scratch, not copy a working
-  pattern from `jvmMain`/`androidMain`.
++ `SqlJsDriver`, a from-scratch synchronous `SqlDriver` against sql.js, closes the browser
+  persistence gap no official SqlDelight driver could (verified end to end through `LocalStore`'s
+  real generated queries, same rigor as `IdentityApi`) - `webclient` gets `core`'s actual
+  `LocalStore`/`SyncClient`, not a reimplementation.
+− `SqlJsDriver` is in-memory only - data doesn't survive a page reload yet. sql.js's own
+  `export()`/`import()` (persisted to IndexedDB, mirroring `IdentityApi`'s own key storage) is
+  the real next step, not done here.
 − A second public TLS host (`app.squaddle.org`) and CORS origin to maintain at the relay.
 − Bundle size (1,115 KB raw / 348 KB gzip for identity alone, core's membership/sync-client code
   and the Kotlin stdlib pulled in transitively) will grow as more of `core` gets `@JsExport`ed -
