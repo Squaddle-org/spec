@@ -13,8 +13,12 @@ measured via real spikes (branches `spike/adr-0009-js-ir` / `spike/adr-0009-wasm
 (c) A standalone TypeScript reimplementation of the protocol (no `core` reuse).
 
 ## Decision
-**(a)**: real `js(IR)` target. Its crypto-bridge bundling blocker is fixed (a committed webpack
-shim); runtime correctness in a real browser is the one thing still open (see Consequences).
+**(a)**: real `js(IR)` target. Its crypto-bridge blocker is fixed, and - beyond just bundling -
+verified cryptographically correct end to end in a real JS engine (V8, via Node/Vitest): real
+24-word mnemonic generation, correct key derivation, valid Ed25519 signatures, and
+restore-from-mnemonic correctly reproducing the same user keys with a fresh device keypair
+(PROTOCOL.md §2.1). This is not yet a real-*browser* (DOM/CSP-enforcement) check - see
+Consequences for what's still open.
 
 - **(a) js(IR)** - `commonMain` compiles for `js(IR)` with no structural changes (the module's
   only `expect`/`actual` pairs - `createHttpClient`/`nowUnixSeconds`/`createSqlDriver` - are
@@ -36,15 +40,29 @@ shim); runtime correctness in a real browser is the one thing still open (see Co
   do a bare, synchronous `require('libsodium-sumo')` that cannot consume an async ES module using
   top-level await) plus a `resolve.fallback` for a dead-code Node `url`/`path` import inside
   `libsodium-sumo`'s own polyfill that webpack's static analysis doesn't see through a runtime
-  guard for. Result: `jsBrowserTest`'s webpack bundle step now succeeds with **zero** resolution
-  errors. **Still unverified**: actual runtime correctness in a real browser - no headless
-  Chromium could be launched in the spike environment (downloaded a real one via Playwright, but
-  it needs root to install missing shared libraries the sandbox doesn't have and couldn't grant);
-  this is the literal next step once real development resumes with normal tooling access, not a
-  remaining code or config problem. Bundle size and the `wasm-unsafe-eval` CSP question are
-  likewise unmeasured pending that same real-browser check. SqlDelight's browser story is real but
+  guard for. Result: `jsBrowserTest`'s webpack bundle step succeeds with **zero** resolution
+  errors. **Verified correct, not just bundling**: `webclient`'s own consumer-side build hits the
+  exact same broken import (confirmed independently - the fix isn't webpack-specific) via a
+  completely different bundler, Vite/Rollup - ported the same shim as a Vite `resolve.alias`
+  (plus a second fix this surfaced: `libsodium-wrappers-sumo`'s own `package.json` declares no
+  `exports` map, and `core` is consumed via an npm `file:` dependency, whose symlink Vite follows
+  to a real path *outside* `webclient`'s own `node_modules` tree by default - `preserveSymlinks:
+  true` fixes that). A real `@JsExport` facade (`IdentityApi`, new - thin, Promise-wrapping,
+  no logic duplicated) calling actual identity create/restore through this path, run via Vitest
+  (Node + V8, the same engine every real browser also uses - the crypto path here needs nothing
+  DOM-specific, only `crypto.getRandomValues`, native since Node 19), produced: a real 24-word
+  mnemonic, a real 32-byte Ed25519 public key, a real 64-byte signature verifiable against it, and
+  `restore()` from that exact mnemonic reproducing the identical user/box keys with a *different*
+  freshly-minted device keypair - exactly PROTOCOL.md §2.1's design. The webpack bundle (measured
+  via the same build before this Vite path existed) is 1,115 KB raw / 348 KB gzip for
+  `IdentityApi` alone (core's membership/content-plane/sync-client code pulled in transitively,
+  Kotlin stdlib included) - a real number now, not a placeholder; expect it to grow as more of
+  `core`'s surface gets `@JsExport`ed, and revisit before M5a ships if it's a problem. Still open:
+  an actual browser DOM/CSP-enforcement check (`wasm-unsafe-eval` requirement, specifically) - V8
+  running under Node enforces no CSP at all, so that one question genuinely needs a real browser,
+  unlike the cryptographic-correctness question above. SqlDelight's browser story is real but
   non-trivial: `app.cash.sqldelight:web-worker-driver-js` exists (2.4.1+) but needs a Web Worker +
-  SQL.js wired up - deferred past the spike, not solved.
+  SQL.js wired up - still deferred, not solved.
 - **(b) wasmJs** - real negative repro: adding `wasmJs { browser() }` and running
   `:wasmJsMainClasses` fails at dependency resolution outright, Gradle exhaustively checking every
   published variant of the pinned crypto library (jvm, androidJvm, every native target, js) and
@@ -77,15 +95,23 @@ site and whatever holds the wrapped seed. Net effect on `website/nginx.conf`: ze
 ## Consequences
 + One protocol implementation stays true across jvm/android/js - no second CBOR/membership/crypto
   surface to keep in sync with the spec.
-+ `core`'s own portability gap (four JVM-only `String.format` calls) is now a known, fixed, cited
-  finding rather than a silent landmine for any future non-JVM target (iOS included, M6).
-+ The crypto bridge's bundling blocker is fixed, not just diagnosed - a committed
-  `webpack.config.d` shim (two small files), not an upstream dependency.
-− Runtime correctness of that fix is still unverified against a real browser - no headless
-  Chromium could launch in the spike environment (missing shared libraries, no root to install
-  them). Verifying this for real is the literal first task once `core`'s `js(IR)` target lands
-  somewhere with normal tooling access - treat it as open until then, not assumed working.
++ `core`'s own portability gap (four JVM-only `String.format` calls, since consolidated into one
+  shared `Hex` helper) is now a known, fixed, cited finding rather than a silent landmine for any
+  future non-JVM target (iOS included, M6).
++ The crypto bridge is fixed and verified cryptographically correct, not just diagnosed - two
+  small shim files (one per bundler: `core`'s own `webpack.config.d`, `webclient`'s
+  `vite-shims/`), committed in both repos, no upstream dependency.
++ `IdentityApi`, a real `@JsExport` facade, exists and is proven to work end to end
+  (`IdentityStore` in `webclient` calls it; 9 passing tests cover both repos' sides of the
+  boundary) - the pattern for exposing more of `core` to TypeScript as later features need it is
+  now established, not theoretical.
+− A real browser DOM/CSP check (specifically: is `wasm-unsafe-eval` actually required) is still
+  open - V8-under-Node enforces no CSP, so this is a genuinely different question from the
+  cryptographic-correctness one above, which real-browser access isn't needed to answer.
 − SqlDelight's browser-persistence story (Web Worker + SQL.js) is real but unintegrated; the
   `webclient` scaffold's local-storage layer has to solve this from scratch, not copy a working
   pattern from `jvmMain`/`androidMain`.
 − A second public TLS host (`app.squaddle.org`) and CORS origin to maintain at the relay.
+− Bundle size (1,115 KB raw / 348 KB gzip for identity alone, core's membership/sync-client code
+  and the Kotlin stdlib pulled in transitively) will grow as more of `core` gets `@JsExport`ed -
+  worth revisiting with `manualChunks`/code-splitting before M5a ships if it becomes a problem.
