@@ -16,6 +16,10 @@ Room content (ideas, votes, comments, events), user identity seed, epoch keys, i
 | XSS in web client | Steal keys from IndexedDB | — mitigate with strict CSP, no third-party scripts, SRI |
 | Relay operator with billing enabled | Link a store purchase (and thus potentially a Google account) to a room id | Read content. Mitigation later: blind-signed boost tokens |
 
+`GET /users/{user}/rooms` (self-only, added for seed-restore room recovery) serves a user's own
+membership graph back to that user's own devices - it exposes nothing beyond what the relay
+operator row above already states the relay operator can see.
+
 ## Explicit non-goals (v1)
 - Metadata privacy against the relay (membership graph is visible). Sealed-sender style later if needed.
 - Forward secrecy within an epoch (MLS would provide it; see ADR-0005).
