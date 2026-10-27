@@ -96,7 +96,7 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
 
 ## M5 — Web client / PWA + device linking · repos: webclient (new), core, website
 - [x] Decide: Compose/Wasm vs TS client against spec (ADR-0009) - `core`'s `js(IR)` target,
-      hosted at `app.squaddle.org`. The pinned libsodium bindings' `js` artifact's crypto bridge
+      hosted at `client.squaddle.org`. The pinned libsodium bindings' `js` artifact's crypto bridge
       is fixed and verified cryptographically correct end to end (identity create/restore, via
       the new `IdentityApi` facade + `webclient`'s `IdentityStore`). A real-browser DOM/CSP check
       (`wasm-unsafe-eval`) is still open - see ADR-0009.

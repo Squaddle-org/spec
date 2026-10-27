@@ -91,7 +91,7 @@ Consequences for what's still open.
   weighs most heavily, and the only one (a) doesn't need a second implementation to satisfy once
   its one real blocker is fixed.
 
-**Hosting**: `webclient` deploys to its own origin, `app.squaddle.org`, not a path under
+**Hosting**: `webclient` deploys to its own origin, `client.squaddle.org`, not a path under
 `squaddle.org`. `website`'s CSP is already maximally strict (`default-src 'self'; script-src
 'self'`, no eval of any kind); `webclient` will need `connect-src` for the relay's HTTPS/WSS origin
 and, once the blocker above is fixed, very likely `wasm-unsafe-eval` for libsodium's WASM blob -
@@ -122,7 +122,7 @@ site and whatever holds the wrapped seed. Net effect on `website/nginx.conf`: ze
 − `SqlJsDriver` is in-memory only - data doesn't survive a page reload yet. sql.js's own
   `export()`/`import()` (persisted to IndexedDB, mirroring `IdentityApi`'s own key storage) is
   the real next step, not done here.
-− A second public TLS host (`app.squaddle.org`) and CORS origin to maintain at the relay.
+− A second public TLS host (`client.squaddle.org`) and CORS origin to maintain at the relay.
 − Bundle size (1,115 KB raw / 348 KB gzip for identity alone, core's membership/sync-client code
   and the Kotlin stdlib pulled in transitively) will grow as more of `core` gets `@JsExport`ed -
   worth revisiting with `manualChunks`/code-splitting before M5a ships if it becomes a problem.
