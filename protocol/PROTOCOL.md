@@ -225,8 +225,20 @@ See `relay-api.yaml`. Limits/boosts: §8. Summary:
 
 ## 6. Push
 - Client registers a UnifiedPush endpoint per device: `POST /v1/push` `{endpoint}`.
-- On new ops/log entries the relay POSTs `{"r":"<b32 roomId>","c":<cursor>}` — no content, no author.
+- On new ops/log entries the relay sends a real Web Push request (RFC 8030) to that endpoint:
+  `Authorization: vapid t=<ES256 JWT>, k=<base64url VAPID public key>` (RFC 8292 §3), `TTL:
+  <seconds>` header (RFC 8030 §5.2), body `{"r":"<b32 roomId>","c":<cursor>}` — no author, no
+  room content. JWT claims (RFC 8292 §2): `aud` = the endpoint's origin, `exp` ≤ now+24h, `sub`
+  = a contact URI (`mailto:` or `https://squaddle.org`).
+- `GET /v1/push/vapid` (unauthenticated, like `/healthz`) → `{"publicKey": "<base64url,
+  uncompressed P-256 point>"}` — lets a client learn the relay's VAPID public key ahead of
+  subscribing (needed by browser `PushManager.subscribe({applicationServerKey})` flows; Android's
+  UnifiedPush registration doesn't need this - the distributor hands out the endpoint directly).
 - Relay debounces per (device, room), 30s.
+- See ADR-0013 for why VAPID uses ECDSA P-256/ES256 rather than a libsodium construction (an
+  external interop mandate from the Web Push ecosystem, scoped only to this relay↔push-service
+  edge) and why this payload being content-free means RFC 8291 (payload encryption) never
+  applies here - no payload, nothing to encrypt.
 
 ## 7. Backup file (`.squaddle-backup`)
 ```

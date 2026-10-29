@@ -83,12 +83,19 @@ Shared across all repos. Work strictly in order. Each milestone ends with green 
   gap: recovering an identity from the seed alone previously recovered no room membership at all,
   since nothing let a client ask "which rooms am I in" without an existing local log copy.
 
+## Spec v1.0.0-draft.4
+- §6 Push: real Web Push (RFC 8030) send with VAPID (RFC 8292, ECDSA P-256/ES256) authentication,
+  replacing the previously-unspecified "just POST it" send - see ADR-0013 for why VAPID is a
+  bounded, external-interop carve-out from the libsodium-only rule. New `GET /v1/push/vapid`.
+  RFC 8291 payload encryption never applies: the push payload stays content-free by design.
+
 ## M4 — Android app · repos: android, website
-- [ ] Onboarding: create identity, show seed, set display name
-- [ ] Rooms list, room view (ideas sorted by score, vote, comment), create idea
-- [ ] Members screen: roles, kick, promote, transfer owner, pending approvals
-- [ ] Invite screen: expiry, max uses, approval toggle, share sheet → WhatsApp
-- [ ] App Links (`assetlinks.json`, `autoVerify`), join flow from link, clipboard fallback, Install Referrer
+- [x] Onboarding: create identity, show seed, set display name
+- [x] Rooms list, room view (ideas sorted by score, vote, comment), create idea
+- [x] Members screen: roles, kick, promote, transfer owner, pending approvals
+- [x] Invite screen: expiry, max uses, approval toggle, share sheet → WhatsApp
+- [x] App Links (`assetlinks.json`, `autoVerify`), join flow from link, clipboard fallback
+- [ ] Install Referrer (play flavor)
 - [ ] Idea → event, export to device calendar (CalendarContract) and `.ics` share
 - [ ] UnifiedPush + WorkManager background sync
 - [ ] Product flavors `foss` / `play`; limits UI ("room full", boost CTA), voucher redemption in both flavors

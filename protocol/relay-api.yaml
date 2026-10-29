@@ -187,6 +187,12 @@ paths:
       security: []
       parameters: [ { name: code, in: path, required: true, schema: { type: string } } ]
       responses: { '200': { description: blobs }, '404': { description: empty } }
+  /push/vapid:
+    get:
+      summary: VAPID public key used to sign Web Push sends (unauthenticated) - ADR-0013
+      security: []
+      responses:
+        '200': { description: 'base64url, uncompressed P-256 point', content: { application/json: { schema: { type: object, required: [publicKey], properties: { publicKey: { type: string } } } } } }
   /push:
     post:
       summary: Register UnifiedPush endpoint for the calling device
