@@ -225,20 +225,31 @@ See `relay-api.yaml`. Limits/boosts: §8. Summary:
 
 ## 6. Push
 - Client registers a UnifiedPush endpoint per device: `POST /v1/push` `{endpoint}`.
-- On new ops/log entries the relay sends a real Web Push request (RFC 8030) to that endpoint:
-  `Authorization: vapid t=<ES256 JWT>, k=<base64url VAPID public key>` (RFC 8292 §3), `TTL:
-  <seconds>` header (RFC 8030 §5.2), body `{"r":"<b32 roomId>","c":<cursor>}` — no author, no
-  room content. JWT claims (RFC 8292 §2): `aud` = the endpoint's origin, `exp` ≤ now+24h, `sub`
-  = a contact URI (`mailto:` or `https://squaddle.org`).
+- On new ops/log entries the relay sends a real Web Push request (RFC 8030) to every endpoint
+  registered for a device holding an active role in that room: `Authorization: vapid
+  t=<ES256 JWT>, k=<base64url VAPID public key>` (RFC 8292 §3), `TTL: <seconds>` header (RFC 8030
+  §5.2), **empty body** — no room id, no cursor, no author, no content whatsoever. The push is a
+  pure wake-up; it carries no information at all beyond "something changed somewhere." JWT claims
+  (RFC 8292 §2): `aud` = the endpoint's origin, `exp` ≤ now+24h, `sub` = a contact URI (`mailto:`
+  or `https://squaddle.org`).
+- On receiving any push, a client pulls every room it currently knows about (not just the one
+  that changed - the push doesn't say which, by design) and derives any user-facing notification
+  text locally, after decrypting, never from the push itself (there is nothing in it to use
+  anyway).
 - `GET /v1/push/vapid` (unauthenticated, like `/healthz`) → `{"publicKey": "<base64url,
   uncompressed P-256 point>"}` — lets a client learn the relay's VAPID public key ahead of
   subscribing (needed by browser `PushManager.subscribe({applicationServerKey})` flows; Android's
   UnifiedPush registration doesn't need this - the distributor hands out the endpoint directly).
-- Relay debounces per (device, room), 30s.
+- Relay debounces per (device, room) internally, 30s, before deciding whether to send a wake-up
+  at all - the empty body means a device woken for room A and one woken for room B are
+  indistinguishable on the wire, so debouncing collapses to "has this device been woken at all
+  in the last 30s" in practice, which is intentional: finer-grained wake-ups would need to encode
+  *something* room-specific, defeating the point of a content-free payload.
 - See ADR-0013 for why VAPID uses ECDSA P-256/ES256 rather than a libsodium construction (an
   external interop mandate from the Web Push ecosystem, scoped only to this relay↔push-service
-  edge) and why this payload being content-free means RFC 8291 (payload encryption) never
-  applies here - no payload, nothing to encrypt.
+  edge) and why this payload being genuinely empty means RFC 8291 (payload encryption) never
+  applies here - no payload, nothing to encrypt, and no `p256dh`/`auth` subscription keys are
+  collected at registration for the same reason.
 
 ## 7. Backup file (`.squaddle-backup`)
 ```
