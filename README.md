@@ -14,3 +14,9 @@ to collect, vote on and schedule ideas. Implementations: [core](https://github.c
 | `adr/` | Architecture Decision Records |
 
 Releases: tags `vX.Y.Z[-draft.N]`, each with `testvectors.tar.gz` attached (see `.github/workflows/release.yml`).
+
+## License
+
+The protocol/design text (everything outside `tools/`) is [CC-BY-4.0](LICENSE) — the protocol
+should be freely implementable, with attribution. `tools/` (test vector generation/verification
+tooling) is separately [Apache-2.0](tools/LICENSE), since that's code, not protocol text.
