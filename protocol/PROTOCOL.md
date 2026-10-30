@@ -58,10 +58,13 @@ DeviceRevoke { 0:v, 1:user, 2:device, 3:revokedAt, 4:sig }  domain "devrevoke"
 ### 2.3 Device linking
 1. New device N generates its `deviceKey`, an ephemeral X25519 keypair `ek` and a random 16-byte `code`.
    It shows a QR: `squaddle-link:v1:<relayHost>:<b64 code>:<b64 ek.pk>`.
-2. Existing device E scans and posts `crypto_box_seal(ek.pk, CBOR{0:entropy, 1:rooms[]})` to `POST /v1/link/{code}`.
+2. Existing device E scans and posts `crypto_box_seal(ek.pk, CBOR{0:entropy, 1:rooms[{0:roomRef, 1:name?}]})`
+   to `POST /v1/link/{code}` - `rooms[]` uses the same shape as the backup file's own room list (§7).
 3. N polls `GET /v1/link/{code}`, opens the box, derives the user keys, issues its own `DeviceCert`
    (it now holds the user signing key) and publishes it.
-4. Both devices show a 6-digit confirmation code = first 20 bits of `BLAKE2b(ek.pk ‖ userKey)`; user compares.
+4. Both devices show a 6-digit confirmation code: take the first 20 bits of `BLAKE2b(ek.pk ‖ userKey)`
+   as a big-endian uint (range 0..1,048,575) and reduce `mod 1_000_000`, zero-padded to 6 digits;
+   user compares.
 5. Mailbox entries expire after 5 minutes and are deleted on first read.
 
 ## 3. Rooms and the membership log (control plane)
