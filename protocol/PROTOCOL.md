@@ -180,11 +180,19 @@ OpBody { 0: type tstr, 1: payload map }
 | `event.set` / `event.cancel` | `{id, field, value}` / `{id}` | event author or admin |
 | `rsvp.set` | `{eventId, value ∈ {yes,no,maybe}}` | own only |
 | `profile.set` | `{displayName, emoji?}` | own only (per-room display name) |
+| `room.set` | `{name}` | admin or owner; LWW, no author-ownership concept (ADR-0014) |
 
 LWW order: `(lamport, deviceKey bytes)` lexicographic. Unknown types MUST be ignored (forward compat).
 
 `event.create`'s room-setting half (§4.2) is §3.3 row 11 field 1, `membersCanCreateEvents`
 (default `true`).
+
+`room.set` (ADR-0014) is deliberately unlike `profile.set`: a room's name is shared room state,
+not personal data, so authorization is a pure `admin or owner` role check with no author-match at
+all - any current admin/owner may set it, and LWW resolves concurrent writers the same way every
+other field in this table does. The invite envelope's own `roomName` field (§3.5) is unchanged and
+still the only way to preview a name before joining; once a `room.set` exists, implementations
+should source that preview from the materialized name rather than a local-only guess.
 
 ### 4.3 Export
 `event.*` maps to iCalendar `VEVENT` (RFC 5545) at export time only (`UID = b32(eventId)@squaddle`).
