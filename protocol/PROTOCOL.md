@@ -227,6 +227,11 @@ See `relay-api.yaml`. Limits/boosts: §8. Summary:
   over `"SQDL1" ‖ "req" ‖ 0x00 ‖ BLAKE2b(method ‖ "\n" ‖ path+query ‖ "\n" ‖ ts ‖ "\n" ‖ nonce ‖ BLAKE2b(body))`.
   `nonce` is 16 random bytes, fresh per request. Relay rejects `|now − ts| > 60s` and replays
   within the window (cache keyed by `nonce`).
+- `GET /ws` additionally accepts the same four fields as query parameters
+  (`?device=&ts=&nonce=&sig=`) when the header is absent - the one route a browser's native
+  `WebSocket` API has no way to set a custom header on (ADR-0015). For this route only, the
+  signing input is always computed over the bare path (`/ws`, never `/ws?...`), regardless of
+  which transport carries the four fields.
 - Read access to ops/snapshots: device's user is member/admin/owner (not pending, not removed).
 - `GET /users/{user}/rooms`: caller's device must belong to `{user}` (self-only) - returns every
   room on this relay where `{user}` currently holds an active role, with each room's own recorded

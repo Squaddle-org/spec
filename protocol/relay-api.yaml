@@ -205,5 +205,16 @@ paths:
       responses: { '204': { description: removed } }
   /ws:
     get:
-      summary: 'WebSocket. Client sends {"sub":["<room>",...]}; server pushes {"r":"<room>","c":<cursor>,"k":"ops|log"}'
+      summary: >-
+        WebSocket. Client sends {"sub":["<room>",...]}; server pushes
+        {"r":"<room>","c":<cursor>,"k":"ops|log"}. A browser's native WebSocket API can't set a
+        custom Authorization header on this upgrade request, so unlike every other route here this
+        one also accepts the same four sqdl1 fields as query parameters instead, used only when the
+        header is absent (ADR-0015) - the signing input is always the bare path (/ws), never
+        path+query, regardless of which transport carries the four fields.
+      parameters:
+        - { name: device, in: query, required: false, schema: { type: string }, description: 'Query-param auth fallback (ADR-0015) - required together with ts/nonce/sig when the Authorization header is absent' }
+        - { name: ts, in: query, required: false, schema: { type: string } }
+        - { name: nonce, in: query, required: false, schema: { type: string } }
+        - { name: sig, in: query, required: false, schema: { type: string } }
       responses: { '101': { description: upgraded } }
